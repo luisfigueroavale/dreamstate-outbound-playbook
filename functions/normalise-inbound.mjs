@@ -36,13 +36,17 @@ function labelOk(label, last) {
   if (label.startsWith("-") || label.endsWith("-")) return false;
   if (!charsOk(label, true)) return false;
   if (!last) return true;
-  if (label.startsWith("xn--")) return label.length >= 6 && charsOk(label.slice(4), false);
+  if (label.startsWith("xn--")) {
+    const tail = label.slice(4);
+    if (!tail || tail.startsWith("-") || tail.endsWith("-")) return false;
+    return charsOk(tail, true);
+  }
   if (label.length < 2) return false;
   return charsOk(label, false) && ![...label].some((char) => char >= "0" && char <= "9");
 }
 
 function hostOk(host) {
-  if (!host || host.includes("..") || host.startsWith(".") || host.endsWith(".")) return false;
+  if (!host || host.length > 253 || host.includes("..") || host.startsWith(".") || host.endsWith(".")) return false;
   const labels = host.split(".");
   if (labels.length < 2) return false;
   const allNumeric = labels.every((label) => label.length > 0 && [...label].every((char) => char >= "0" && char <= "9"));
@@ -55,7 +59,7 @@ function looksLikeEmail(value) {
   if (at < 1 || at !== value.lastIndexOf("@")) return false;
   const local = value.slice(0, at);
   const host = value.slice(at + 1);
-  if (!local || local.includes("..") || local.startsWith(".") || local.endsWith(".")) return false;
+  if (!local || local.length > 64 || local.includes("..") || local.startsWith(".") || local.endsWith(".")) return false;
   if (!/^[a-z0-9][a-z0-9._%+-]*$/.test(local)) return false;
   return hostOk(host);
 }

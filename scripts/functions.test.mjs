@@ -28,6 +28,14 @@ test("normalise rejects missing and malformed, marks personal, and keys the emai
   assert.equal(normaliseInbound({ email: "ada@acme.12", form_id: FORM_ID }).reason, "malformed email");
   assert.equal(normaliseInbound({ email: "ada@1.2.3.4", form_id: FORM_ID }).reason, "malformed email");
   assert.equal(normaliseInbound({ email: "ada@brand.xn--p1ai", form_id: FORM_ID }).ok, true);
+  assert.equal(normaliseInbound({ email: "ada@brand.xn--caf-dma", form_id: FORM_ID }).ok, true);
+  assert.equal(normaliseInbound({ email: "ada@-brand.example", form_id: FORM_ID }).reason, "malformed email");
+  assert.equal(normaliseInbound({ email: "ada@brand-.example", form_id: FORM_ID }).reason, "malformed email");
+  assert.equal(normaliseInbound({ email: "ada@brand..example", form_id: FORM_ID }).reason, "malformed email");
+  const sixtyThree = "a".repeat(63);
+  const sixtyFour = "a".repeat(64);
+  assert.equal(normaliseInbound({ email: `ada@${sixtyThree}.example`, form_id: FORM_ID }).ok, true);
+  assert.equal(normaliseInbound({ email: `ada@${sixtyFour}.example`, form_id: FORM_ID }).reason, "malformed email");
   const personal = normaliseInbound({ email: "Dana@gmail.com", form_id: FORM_ID });
   assert.equal(personal.mailbox_class, "personal");
   assert.equal(personal.email, "dana@gmail.com");

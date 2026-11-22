@@ -249,7 +249,8 @@ const strict = options.strict ?? false;
   return { ok: errors.length === 0, errors, textFiles: textFiles.length, skills: skillDirs.length };
 }
 
-const isDirect = process.argv[1] && import.meta.url === pathToFileURL(realpathSync(process.argv[1])).href;
+const launched = process.argv[1];
+const isDirect = Boolean(launched && existsSync(launched) && import.meta.url === pathToFileURL(realpathSync(launched)).href);
 if (isDirect) {
   const result = runChecks(process.cwd(), { strict: process.argv.includes("--strict") });
   if (!result.ok) {
