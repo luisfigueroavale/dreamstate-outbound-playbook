@@ -31,7 +31,7 @@ text{font-family:var(--font-sans)}
 <text x="96" y="942" fill="var(--color-accent)" font-size="28">5. Tier 2</text>
 <text x="96" y="978" fill="var(--color-muted)" font-size="20">Fit at 55</text>
 <text x="96" y="1004" fill="var(--color-muted)" font-size="20">A draft LinkedIn sequence</text>
-<text x="96" y="1030" fill="var(--color-muted)" font-size="20">Enrollment is a later yes</text>
+<text x="96" y="1030" fill="var(--color-muted)" font-size="20">Draft and enrollment each need a yes</text>
 <rect x="72" y="1076" width="936" height="160" fill="var(--color-bg)" stroke="var(--color-fg)" stroke-width="2"/>
 <text x="96" y="1118" fill="var(--color-accent)" font-size="28">6. Hold</text>
 <text x="96" y="1154" fill="var(--color-muted)" font-size="20">Unknown fit stays held</text>
