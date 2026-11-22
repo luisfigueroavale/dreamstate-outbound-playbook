@@ -1,17 +1,18 @@
-# Webhook
+# Webhook attach
 
 ## Inputs
 
-definition_id source.webhook_source. Require a secret. upsert_field is email. The worksheet id is resolved at run time.
+table_id resolved at run time. source_column_id null, because the source owns the rows. binding_spec.definition_id is source.webhook_source. input_bindings set require_secret to the literal true and upsert_field to the literal email. The card lists require_secret as optional. This repo always sets it to true.
 
 ## Call
 
-tables.findable_catalog.list is free. Confirm the card still has those fields. Binding the source is a write and waits for a yes. Do not hard-code a vendor definition id.
+tables.table_sources.attach. 0 credits and a write. dry_run first, quote, wait for the owner's yes on that item. There is no form trigger on a workflow. The graph stays manual_run until the worksheet id exists, which is why the attach names the worksheet at import time and the graph does not.
 
 ## Show the owner
 
-The price line. On 2026-11-22 the minimum is 0 and the maximum was not stated. Say that.
+The worksheet you will bind, and that the secret is required.
 
 ## Failure cases
 
-The card is missing require_secret. Stop. Do not accept an open webhook.
+The card no longer accepts those fields. Stop.
+You attach without a secret. Do not.

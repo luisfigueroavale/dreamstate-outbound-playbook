@@ -33,7 +33,7 @@
         "artifact_id": "RESOLVE_AT_RUN_TIME",
         "platform": "linkedin",
         "expected_revision": "FROM_LIST",
-        "rules": []
+        "rules": "FROM_MERGE"
       },
       "id": "replace-rules",
       "capability_id": "social.outreach.keyword_dm_rules.replace",

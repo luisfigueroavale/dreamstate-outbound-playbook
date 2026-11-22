@@ -13,6 +13,20 @@
       "show": "Pick the sender at run time. Do not paste an account id into the repo."
     },
     {
+      "mode": "live",
+      "needs_yes": false,
+      "credit_ceiling": 0,
+      "params": {
+        "status": "published",
+        "provider": "linkedin",
+        "limit": 25
+      },
+      "id": "list-own-posts",
+      "capability_id": "social.content.artifact_list",
+      "effect": "read",
+      "show": "Free read of the workspace post inventory. Resolve each platform post id from the artifact at run time. Default 10, cap 25."
+    },
+    {
       "mode": "dry_run",
       "needs_yes": true,
       "credit_ceiling": 0,
@@ -113,12 +127,69 @@
     {
       "mode": "dry_run",
       "needs_yes": true,
+      "credit_ceiling": 0,
+      "params": {
+        "table_id": "RESOLVE_AT_RUN_TIME",
+        "row_kind": "person"
+      },
+      "id": "write-tier",
+      "capability_id": "tables.rows.upsert",
+      "effect": "write",
+      "show": "Write the tier and the reason back onto Warm people."
+    },
+    {
+      "mode": "live",
+      "needs_yes": false,
+      "credit_ceiling": 0,
+      "params": {
+        "definition_id": "source.engaged_with_account",
+        "source_inputs": {
+          "profile_urls": {
+            "kind": "column",
+            "column_key": "PROFILE_URL_COLUMN"
+          }
+        },
+        "limit": 5
+      },
+      "id": "preview-other-posts",
+      "capability_id": "tables.sourcing.preview",
+      "effect": "read",
+      "show": "Free first look. Only for posts that are not yours. profile_urls comes from an existing column."
+    },
+    {
+      "mode": "dry_run",
+      "needs_yes": true,
+      "credit_ceiling": 0,
+      "params": {
+        "table_id": "RESOLVE_AT_RUN_TIME",
+        "source_column_id": null,
+        "binding_spec": {
+          "definition_id": "source.engaged_with_account",
+          "input_bindings": {
+            "profile_urls": {
+              "kind": "column",
+              "column_key": "PROFILE_URL_COLUMN"
+            }
+          }
+        }
+      },
+      "id": "attach-other-posts",
+      "capability_id": "tables.table_sources.attach",
+      "effect": "write",
+      "show": "Attach after the preview. The card price is up to 1 credit a row."
+    },
+    {
+      "mode": "dry_run",
+      "needs_yes": true,
       "credit_ceiling": 50,
-      "params": {},
-      "id": "other-posts",
-      "capability_id": "source.engaged_with_account",
+      "params": {
+        "table_id": "RESOLVE_AT_RUN_TIME",
+        "max_rows": "FROM_QUOTE"
+      },
+      "id": "run-other-posts",
+      "capability_id": "tables.table_sources.run",
       "effect": "spend",
-      "show": "Only for posts that are not yours. 1 credit a row on the card. Quote before the live run."
+      "show": "dry_run first, quote, wait for the owner's yes on that item. Then live with max_credits and an idempotency_key. Quote up to 1 credit a row."
     }
   ]
 }

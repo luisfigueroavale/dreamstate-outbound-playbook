@@ -18,7 +18,16 @@ const PERSONAL_DOMAINS = new Set([
   "mail.com",
 ]);
 
-const EMAIL = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
+function looksLikeEmail(value) {
+  const at = value.indexOf("@");
+  if (at < 1 || at !== value.lastIndexOf("@")) return false;
+  const local = value.slice(0, at);
+  const host = value.slice(at + 1);
+  const dot = host.lastIndexOf(".");
+  if (dot < 1 || host.length - dot < 3) return false;
+  if (local.includes("..") || host.includes("..") || host.startsWith(".") || host.endsWith(".")) return false;
+  return /^[a-z0-9][a-z0-9._%+-]*$/.test(local) && /^[a-z0-9][a-z0-9.-]*$/.test(host);
+}
 
 export function normaliseInbound(input = {}) {
   const formId = String(input.form_id ?? "").trim();
@@ -26,7 +35,7 @@ export function normaliseInbound(input = {}) {
   if (!raw) {
     return { ok: false, reason: "missing email", email: null, mailbox_class: null, form_id: formId, idempotency_key: null };
   }
-  if (!EMAIL.test(raw) || raw.includes("..")) {
+  if (!looksLikeEmail(raw)) {
     return { ok: false, reason: "malformed email", email: null, mailbox_class: null, form_id: formId, idempotency_key: null };
   }
   const domain = raw.slice(raw.lastIndexOf("@") + 1);

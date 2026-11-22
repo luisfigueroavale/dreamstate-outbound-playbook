@@ -1,6 +1,15 @@
 import { readdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 
+function tokenValues() {
+  const css = readFileSync(new URL("../brand/tokens.css", import.meta.url), "utf8");
+  const values = {};
+  for (const match of css.matchAll(/(--[a-z0-9-]+)\s*:\s*([^;]+);/g)) {
+    values[match[1]] = match[2].trim();
+  }
+  return values;
+}
+
 const WIDTH = 1080;
 const HEIGHT = 1350;
 const MARGIN = 72;
@@ -23,11 +32,12 @@ export function renderCard(card) {
     ? Math.floor((bottom - top - gap * (boxes.length - 1)) / boxes.length)
     : 160;
   const titleSize = card.title.length > 42 ? 32 : 36;
+  const tokens = tokenValues();
   const parts = [];
   parts.push(`<svg xmlns="http://www.w3.org/2000/svg" width="${WIDTH}" height="${HEIGHT}" viewBox="0 0 ${WIDTH} ${HEIGHT}" role="img">`);
   parts.push("<title>" + escapeXml(card.title) + "</title>");
   parts.push("<style>");
-  parts.push(":root{--color-bg:#ffffff;--color-fg:#111111;--color-accent:#111111;--color-muted:#555555;--font-sans:Georgia,serif}");
+  parts.push(`:root{--color-bg:${tokens["--color-bg"]};--color-fg:${tokens["--color-fg"]};--color-accent:${tokens["--color-accent"]};--color-muted:${tokens["--color-muted"]};--font-sans:${tokens["--font-sans"]}}`);
   parts.push("text{font-family:var(--font-sans)}");
   parts.push("</style>");
   parts.push(`<rect width="${WIDTH}" height="${HEIGHT}" fill="var(--color-bg)"/>`);
@@ -40,7 +50,7 @@ export function renderCard(card) {
     const y = top + index * (boxHeight + gap);
     const lines = (box.lines ?? []).slice(0, 3);
     parts.push(`<rect x="${MARGIN}" y="${y}" width="${WIDTH - MARGIN * 2}" height="${boxHeight}" fill="var(--color-bg)" stroke="var(--color-fg)" stroke-width="2"/>`);
-    parts.push(`<text x="${MARGIN + 24}" y="${y + 42}" fill="var(--color-fg)" font-size="28">${box.n}. ${escapeXml(box.name)}</text>`);
+    parts.push(`<text x="${MARGIN + 24}" y="${y + 42}" fill="var(--color-accent)" font-size="28">${box.n}. ${escapeXml(box.name)}</text>`);
     lines.forEach((line, lineIndex) => {
       parts.push(`<text x="${MARGIN + 24}" y="${y + 78 + lineIndex * 26}" fill="var(--color-muted)" font-size="20">${escapeXml(line)}</text>`);
     });

@@ -11,10 +11,10 @@ export function validate(data, schema, path = "$") {
     for (const key of schema.required ?? []) {
       if (data[key] === undefined) errors.push(`${path}.${key} is required`);
     }
+    const allowedKeys = new Set(Object.keys(schema.properties ?? {}));
+    const extraKeys = Object.keys(data).filter((key) => !allowedKeys.has(key));
     if (schema.additionalProperties === false) {
-      for (const key of Object.keys(data)) {
-        if (!schema.properties || schema.properties[key] === undefined) errors.push(`${path}.${key} is not allowed`);
-      }
+      for (const key of extraKeys) errors.push(`${path}.${key} is not allowed`);
     }
     for (const [key, child] of Object.entries(schema.properties ?? {})) {
       if (data[key] !== undefined) errors.push(...validate(data[key], child, `${path}.${key}`));

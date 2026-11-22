@@ -1,6 +1,8 @@
 import { inlineFunction, nullable, objectSchema } from "./inline.mjs";
 
-function codeNode(id, y, file, schema) {
+function codeNode(id, y, file, fnName, schema) {
+  const body = inlineFunction(new URL(`../../functions/${file}.mjs`, import.meta.url));
+  const source = `${body}\nresult = ${fnName}(typeof payload === "undefined" ? {} : payload);\n`;
   return {
     id,
     type: "action",
@@ -10,8 +12,14 @@ function codeNode(id, y, file, schema) {
       subtype: "code",
       label: id,
       config: {
-        source: inlineFunction(new URL(`../../functions/${file}.mjs`, import.meta.url)),
+        source,
         output_schema: schema,
+        input_mappings: {
+          payload: {
+            path: "trigger.payload",
+            provenance: { kind: "endpoint_schema", source_ref: "trigger.payload" },
+          },
+        },
       },
     },
   };
@@ -68,12 +76,13 @@ const normaliseSchema = objectSchema(
 );
 
 const classSchema = objectSchema(
-  ["class", "reason", "sync_allowed", "record_id"],
+  ["class", "reason", "sync_allowed", "record_id", "next"],
   {
     class: { type: "string" },
     reason: { type: "string" },
     sync_allowed: { type: "boolean" },
     record_id: nullable("string"),
+    next: { type: "string" },
   },
 );
 
@@ -116,8 +125,8 @@ export function buildGraphs() {
         description: "Manual in the graph. The webhook source is attached on a worksheet, with a secret, before this runs.",
         nodes: [
           trigger(0),
-          codeNode("normalise-inbound", 160, "normalise-inbound", normaliseSchema),
-          codeNode("classify-crm-match", 320, "classify-crm-match", classSchema),
+          codeNode("normalise-inbound", 160, "normalise-inbound", "normaliseInbound", normaliseSchema),
+          codeNode("classify-crm-match", 320, "classify-crm-match", "classifyCrmMatch", classSchema),
           approval("approve-sync", 480, "Approve one CRM sync", "Show the class and the one record. Approve is one integrations.sync. Hold sends nothing. Queued is not done."),
         ],
         edges: [
@@ -139,8 +148,8 @@ export function buildGraphs() {
         description: "Manual trigger. A schedule is a standing action and needs its own yes. Post ids and account ids are resolved at run time.",
         nodes: [
           trigger(0),
-          codeNode("roll-up-engagers", 160, "roll-up-engagers", rollSchema),
-          codeNode("tier-engagers", 320, "tier-engagers", tierSchema),
+          codeNode("roll-up-engagers", 160, "roll-up-engagers", "rollUpEngagers", rollSchema),
+          codeNode("tier-engagers", 320, "tier-engagers", "tierEngagers", tierSchema),
           approval("approve-score", 480, "Approve the fit score quote", "Show rows, credits, and quote_hash for one row. The live run uses max_credits from the brief. Default ceiling 50."),
         ],
         edges: [
@@ -162,9 +171,9 @@ export function buildGraphs() {
         description: "Manual trigger. The asset text comes from the funnel skill send-lead-magnet. This graph does not write that text.",
         nodes: [
           trigger(0),
-          codeNode("merge-keyword-rule", 160, "merge-keyword-rule", mergeSchema),
+          codeNode("merge-keyword-rule", 160, "merge-keyword-rule", "mergeKeywordRule", mergeSchema),
           approval("approve-rules", 320, "Approve the rule diff", "Show added, changed, and kept. Replace sends the full set and expected_revision. A keyword clash stops."),
-          codeNode("pick-reply-line", 480, "pick-reply-line", pickSchema),
+          codeNode("pick-reply-line", 480, "pick-reply-line", "pickReplyLine", pickSchema),
           approval("approve-reply", 640, "Approve this exact reply", "Show the frozen line. Approve posts that text. Any DM is a separate yes."),
         ],
         edges: [

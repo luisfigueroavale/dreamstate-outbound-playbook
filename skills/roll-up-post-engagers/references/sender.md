@@ -6,7 +6,7 @@ No required params. Optional limit 1 to 100.
 
 ## Call
 
-senders.linkedin_accounts.list is free. Use the account id field named id. Do not write it into a tracked file. Default the last 10 posts, cap 25. Post ids are resolved at run time too.
+senders.linkedin_accounts.list is free. Use the account id field named id. Do not write it into a tracked file. Then call social.content.artifact_list with status published and provider linkedin. That read is free. Resolve each platform post id from the artifact. Default the last 10, cap 25.
 
 ## Show the owner
 

@@ -10,7 +10,7 @@ People who engage with your posts, ranked by fit and by showing up more than onc
 4. Score with `column.ai_fit_score` at 0.04 a row. Quote one row first.
 5. Tier from [settings/tiers.json](../settings/tiers.json). Tier 1 is fit at or over 75 and a comment or two distinct posts. Tier 2 is fit at or over 55. Unknown fit is hold. A last touch older than 30 days drops one tier. Past 10 tier 1 rows in the week, the rest become tier 2 with a reason.
 6. Tier 2 can become a draft with `sequence.sequences.create_from_worksheet`. The draft is free. Enrollment is not this play.
-7. Posts that are not yours use `source.engaged_with_account` at 1 credit a row, quoted. A single post, right after it goes live, is [score-post-engagers](https://github.com/luisfigueroavale/dreamstate-linkedin-funnel/blob/main/skills/score-post-engagers/SKILL.md). This play covers many posts over time.
+7. Posts that are not yours use `source.engaged_with_account` at up to 1 credit a row, quoted. A single post, right after it goes live, is [score-post-engagers](https://github.com/luisfigueroavale/dreamstate-linkedin-funnel/blob/main/skills/score-post-engagers/SKILL.md). This play covers many posts over time.
 
 ## What needs a yes
 

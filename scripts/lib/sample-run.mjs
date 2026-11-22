@@ -43,6 +43,18 @@ export function routeForms() {
     }
     const search = crmSearches[normalised.email] ?? { status: "ok", records: [] };
     const classified = classifyCrmMatch({ ...search, email: normalised.email });
+    if (classified.next === "assert_record") {
+      return {
+        id: form.id,
+        route: "sync",
+        reason: classified.reason,
+        sync: true,
+        next: "assert_record",
+        class: classified.class,
+        record_id: null,
+        idempotency_key: normalised.idempotency_key,
+      };
+    }
     if (!classified.sync_allowed) {
       return { id: form.id, route: "hold", reason: classified.reason, sync: false, idempotency_key: normalised.idempotency_key, class: classified.class };
     }

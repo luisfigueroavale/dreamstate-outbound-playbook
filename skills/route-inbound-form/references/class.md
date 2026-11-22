@@ -2,17 +2,17 @@
 
 ## Inputs
 
-q is the normalised email. crm.records.search is free. limit defaults to 25.
+q is the normalised email. crm.records.search is free.
 
 ## Call
 
-Pass the records into classify-crm-match. existing is one exact email. new is none. ambiguous is more than one, or a name match without one exact email. failed is a search error.
+Pass the records into classify-crm-match. existing is one exact email and includes the record id. new is none, with next assert_record and sync_allowed false. ambiguous is more than one match, or a name match without one exact email. failed is a search error. next is hold for those.
 
 ## Show the owner
 
-The class, the reason, and the single record id when there is one. Only new and existing may continue.
+The class, the reason, next, and the record id when one exists.
 
 ## Failure cases
 
-An error status. Class failed. Do not sync.
+An error status. Class failed. Do not assert and do not sync.
 Two records. Stop and show both.

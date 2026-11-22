@@ -6,7 +6,7 @@ One inbound form becomes one CRM decision. Missing and malformed emails stop. A 
 
 A webhook row lands. `source.webhook_source` is 0 credits on the minimum. The catalog did not state a maximum. Set `require_secret` and `upsert_field` to email. The worksheet id is resolved at run time.
 
-The workflow graph uses `manual_run` because the node catalog did not return a form trigger. Binding the source to a worksheet is still how the row arrives.
+There is no form or webhook workflow trigger. `table_row_created` needs the webhook worksheet id, and that id is resolved when you import, so it is not stored in this file. The graph stays `manual_run`. The row still arrives by attaching `source.webhook_source` to that worksheet, with require_secret true.
 
 ## Cost
 

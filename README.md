@@ -4,7 +4,7 @@
 
 The decision math for a cold batch lives in dreamstate-outbound-engine. This repo is the plays around it.
 
-You get a free check, three automations, six play cards, and a cost sheet. The check proves the workspace is wired and spent nothing. The automations stay off until you import one. The cards are the plays on one page. Nothing sends without you.
+You get a free check, three automations, six play cards, and a cost sheet. The check proves the workspace is wired and spent nothing. The automations stay off until you import one. The cards are the plays on one page. They use the colors and the sans stack in `brand/tokens.css`. Those values are working defaults so a card can render before `brand.local/` exists. Fill `brand.local/tokens.css` when you have the owner's colors. Nothing sends without you.
 
 ## Who it is for
 
@@ -17,7 +17,7 @@ It will not send, post, enroll, sync to a CRM, switch on a workflow or a rule, s
 ## The first 30 minutes
 
 1. `npx @trydreamstate/cli install`, then sign in in the browser.
-2. `npm run demo`. Open `output/demo/report.md`: a fictional week of forms, engagers, and keyword comments, with a reason for every hold.
+2. Run `npm run demo`, then read the markdown it writes at `output/demo/report.md`. The file walks one made-up week and states why each row was held.
 3. Open the folder in Codex or Claude Code and run `run-free-quickstart`. It calls `whoami`, confirms the workspace, makes only free reads, and shows 0 credits spent.
 4. Copy `settings/` to `settings.local/` and fill `team.json` and `tiers.json` with the agent.
 5. Run `check-email-stack` (free reads) and read the pass or hold per domain and mailbox.
@@ -48,7 +48,7 @@ One play at a time. The 08:00 rollup can add one line from free reads: forms wai
 | --- | --- | --- | --- |
 | Find | `tables.sourcing.preview`, `source.company_search` | Preview free. Company rows 1 credit. Quote a run. | `pick-a-play` |
 | Fill | `provider.enrich.email`, `tables.contacts.verify_email` | Up to 12.45 a row. Verify 0.45 an address. | Engine `find-verified-email` |
-| Signal | `source.engaged_with_account`, `visibility.linkedin.engagement_harvest` | 1 a row, or 0 for your own posts. | `roll-up-post-engagers` |
+| Signal | `source.engaged_with_account`, `visibility.linkedin.engagement_harvest` | Up to 1 a row, or 0 for your own posts. | `roll-up-post-engagers` |
 | Judge | `column.ai_fit_score`, `tables.columns.run` | 0.04 a row, quoted. | `tier-warm-people` |
 | Hand off | `sequence.sequences.create_from_worksheet`, `integrations.sync` | Draft free. Sync is 0 and returns queued. | `route-inbound-form` |
 

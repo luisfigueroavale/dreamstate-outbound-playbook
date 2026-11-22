@@ -93,15 +93,26 @@ export const replyLines = [
 export const commentIds = ["cmt-1", "cmt-2", "cmt-3", "cmt-4"];
 
 export const keywordRules = {
-  revision: 4,
+  expected_revision: 4,
   rules: [
-    { id: "close", keywords: ["close", "month end"] },
-    { id: "staff", keywords: ["hiring"] },
+    {
+      id: "11111111-1111-4111-8111-111111111111",
+      keywords: ["close", "month end"],
+      dm_enabled: false,
+      dm_message: "kept close note",
+      comment_reply_sent_enabled: false,
+    },
+    {
+      id: "22222222-2222-4222-8222-222222222222",
+      keywords: ["hiring"],
+      dm_enabled: true,
+      dm_message: "kept hiring note",
+    },
   ],
 };
 
-export const keywordAdd = { id: "books", keywords: ["books"] };
-export const keywordClash = { id: "again", keywords: ["close"] };
+export const keywordAdd = { keywords: ["books"], dm_enabled: false, dm_message: "share the checklist" };
+export const keywordClash = { keywords: ["close"] };
 
 export const dmGood = {
   text: "{{first_name}}, the close checklist is here: {{link}}",

@@ -1,39 +1,39 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1350" viewBox="0 0 1080 1350" role="img">
 <title>Pay for the lane that found the email</title>
 <style>
-:root{--color-bg:#ffffff;--color-fg:#111111;--color-accent:#111111;--color-muted:#555555;--font-sans:Georgia,serif}
+:root{--color-bg:#f4f7f4;--color-fg:#14241c;--color-accent:#0e6b52;--color-muted:#5c6b64;--font-sans:"Avenir Next", "Segoe UI", sans-serif}
 text{font-family:var(--font-sans)}
 </style>
 <rect width="1080" height="1350" fill="var(--color-bg)"/>
 <text x="72" y="84" fill="var(--color-fg)" font-size="36">Pay for the lane that found the email</text>
 <text x="72" y="128" fill="var(--color-muted)" font-size="22">One column. Stop at the first verified hit. Hold the rest.</text>
 <rect x="72" y="196" width="936" height="160" fill="var(--color-bg)" stroke="var(--color-fg)" stroke-width="2"/>
-<text x="96" y="238" fill="var(--color-fg)" font-size="28">1. Order</text>
+<text x="96" y="238" fill="var(--color-accent)" font-size="28">1. Order</text>
 <text x="96" y="274" fill="var(--color-muted)" font-size="20">Read the lane order first</text>
 <text x="96" y="300" fill="var(--color-muted)" font-size="20">sequence.outreach.enrichment_sequence_get</text>
 <text x="96" y="326" fill="var(--color-muted)" font-size="20">Free read</text>
 <rect x="72" y="372" width="936" height="160" fill="var(--color-bg)" stroke="var(--color-fg)" stroke-width="2"/>
-<text x="96" y="414" fill="var(--color-fg)" font-size="28">2. Work email</text>
+<text x="96" y="414" fill="var(--color-accent)" font-size="28">2. Work email</text>
 <text x="96" y="450" fill="var(--color-muted)" font-size="20">Tries lanes, stops at a verified hit</text>
 <text x="96" y="476" fill="var(--color-muted)" font-size="20">provider.enrich.email</text>
 <text x="96" y="502" fill="var(--color-muted)" font-size="20">Card says up to 12.45 a row</text>
 <rect x="72" y="548" width="936" height="160" fill="var(--color-bg)" stroke="var(--color-fg)" stroke-width="2"/>
-<text x="96" y="590" fill="var(--color-fg)" font-size="28">3. Verify</text>
+<text x="96" y="590" fill="var(--color-accent)" font-size="28">3. Verify</text>
 <text x="96" y="626" fill="var(--color-muted)" font-size="20">0.45 an address</text>
 <text x="96" y="652" fill="var(--color-muted)" font-size="20">tables.contacts.verify_email</text>
 <text x="96" y="678" fill="var(--color-muted)" font-size="20">Catch-all is held</text>
 <rect x="72" y="724" width="936" height="160" fill="var(--color-bg)" stroke="var(--color-fg)" stroke-width="2"/>
-<text x="96" y="766" fill="var(--color-fg)" font-size="28">4. Phone</text>
+<text x="96" y="766" fill="var(--color-accent)" font-size="28">4. Phone</text>
 <text x="96" y="802" fill="var(--color-muted)" font-size="20">A separate column</text>
 <text x="96" y="828" fill="var(--color-muted)" font-size="20">provider.enrich.person.waterfall</text>
 <text x="96" y="854" fill="var(--color-muted)" font-size="20">Price varies. Quote it.</text>
 <rect x="72" y="900" width="936" height="160" fill="var(--color-bg)" stroke="var(--color-fg)" stroke-width="2"/>
-<text x="96" y="942" fill="var(--color-fg)" font-size="28">5. One person</text>
+<text x="96" y="942" fill="var(--color-accent)" font-size="28">5. One person</text>
 <text x="96" y="978" fill="var(--color-muted)" font-size="20">A single lookup, not a column</text>
 <text x="96" y="1004" fill="var(--color-muted)" font-size="20">crm.contact.find_email</text>
 <text x="96" y="1030" fill="var(--color-muted)" font-size="20">Dry run is free, live up to 50</text>
 <rect x="72" y="1076" width="936" height="160" fill="var(--color-bg)" stroke="var(--color-fg)" stroke-width="2"/>
-<text x="96" y="1118" fill="var(--color-fg)" font-size="28">6. Hold</text>
+<text x="96" y="1118" fill="var(--color-accent)" font-size="28">6. Hold</text>
 <text x="96" y="1154" fill="var(--color-muted)" font-size="20">Unknown and catch-all stay held</text>
 <text x="96" y="1180" fill="var(--color-muted)" font-size="20">Do not guess a mailbox</text>
 <text x="96" y="1206" fill="var(--color-muted)" font-size="20">Link the engine finder</text>

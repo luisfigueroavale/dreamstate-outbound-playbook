@@ -15,7 +15,7 @@ Warm people already exist and you want tiers. Not for the first harvest. Not for
 
 1. Add the fit column (`references/fit-column.md`).
 2. Quote one row, then run inside the ceiling (`references/quote.md`).
-3. Apply tiers and write the reason (`references/tiers.md`).
+3. Apply tiers and upsert the tier and the reason (`references/tiers.md`).
 4. Draft a sequence for tier 2 only (`references/draft.md`).
 
 ## Dreamstate tools
@@ -24,6 +24,7 @@ Warm people already exist and you want tiers. Not for the first harvest. Not for
 | --- | --- | --- | --- |
 | 1 | `tables.columns.add` | dry_run | yes |
 | 2 | `tables.columns.run` | dry_run | yes |
+| 3 | `tables.rows.upsert` | dry_run | yes |
 | 4 | `sequence.sequences.create_from_worksheet` | dry_run | yes |
 
 ## Stop

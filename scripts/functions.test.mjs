@@ -99,15 +99,22 @@ test("tiers cover the edges, a recency drop, and one overflow", () => {
 });
 
 test("keyword merge keeps other rules and rejects a clash", () => {
-  const current = { revision: 4, rules: [{ id: "close", keywords: ["close"] }, { id: "staff", keywords: ["hiring"] }] };
-  const added = mergeKeywordRule({ ...current, rule: { id: "books", keywords: ["Books"] } });
+  const current = {
+    expected_revision: 4,
+    rules: [
+      { id: "11111111-1111-4111-8111-111111111111", keywords: ["close"], dm_message: "kept" },
+      { id: "22222222-2222-4222-8222-222222222222", keywords: ["hiring"], dm_message: "also kept" },
+    ],
+  };
+  const added = mergeKeywordRule({ ...current, rule: { keywords: ["Books"], dm_message: "new note" } });
   assert.equal(added.ok, true);
-  assert.deepEqual(added.diff.kept, ["close", "staff"]);
+  assert.deepEqual(added.diff.kept, ["11111111-1111-4111-8111-111111111111", "22222222-2222-4222-8222-222222222222"]);
   assert.equal(added.expected_revision, 4);
   assert.equal(added.rules.length, 3);
-  const clash = mergeKeywordRule({ ...current, rule: { id: "again", keywords: ["CLOSE"] } });
+  assert.equal(added.rules.find((rule) => !rule.id).dm_message, "new note");
+  const clash = mergeKeywordRule({ ...current, rule: { keywords: ["CLOSE"] } });
   assert.equal(clash.ok, false);
-  assert.equal(clash.rules.length, 2);
+  assert.equal(clash.rules[0].dm_message, "kept");
 });
 
 test("reply pick is stable and an empty list stops", () => {

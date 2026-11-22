@@ -3,16 +3,30 @@
   "status": "disabled",
   "steps": [
     {
-      "mode": "live",
-      "needs_yes": false,
+      "mode": "dry_run",
+      "needs_yes": true,
       "credit_ceiling": 0,
       "params": {
-        "definition_id": "source.webhook_source"
+        "table_id": "RESOLVE_AT_RUN_TIME",
+        "source_column_id": null,
+        "binding_spec": {
+          "definition_id": "source.webhook_source",
+          "input_bindings": {
+            "require_secret": {
+              "kind": "literal",
+              "value": true
+            },
+            "upsert_field": {
+              "kind": "literal",
+              "value": "email"
+            }
+          }
+        }
       },
-      "id": "read-webhook-card",
-      "capability_id": "tables.findable_catalog.list",
-      "effect": "read",
-      "show": "Confirm require_secret and upsert_field email. Resolve the worksheet at run time."
+      "id": "attach-webhook",
+      "capability_id": "tables.table_sources.attach",
+      "effect": "write",
+      "show": "require_secret is true. upsert_field is email. The worksheet id is resolved at run time."
     },
     {
       "mode": "live",
@@ -44,45 +58,59 @@
       "id": "classify",
       "local_function": "classify-crm-match",
       "effect": "local",
-      "show": "Only new or existing may continue, and only one record."
-    },
-    {
-      "mode": "live",
-      "needs_yes": false,
-      "credit_ceiling": 0,
-      "params": {
-        "connection_id": "RESOLVE_AT_RUN_TIME",
-        "configuration": {}
-      },
-      "id": "preview-crm",
-      "capability_id": "integrations.crm_management_preview",
-      "effect": "read",
-      "show": "connection_id comes from the connected CRM, not from this file."
+      "show": "A new row returns next assert_record. A sync waits until there is a record id."
     },
     {
       "mode": "dry_run",
       "needs_yes": true,
       "credit_ceiling": 0,
       "params": {
-        "record_id": "ONE_RECORD_ID",
-        "provider": "hubspot"
+        "object_key": "person",
+        "identity": {
+          "kind": "email",
+          "value": "NORMALISED_EMAIL"
+        },
+        "values": {}
+      },
+      "id": "assert-record",
+      "capability_id": "crm.records.assert",
+      "effect": "write",
+      "show": "Only when next is assert_record. Pass the returned record id to the sync. Skip this step when the class is existing and a record id is already in hand."
+    },
+    {
+      "mode": "live",
+      "needs_yes": false,
+      "credit_ceiling": 0,
+      "params": {},
+      "id": "read-provider",
+      "capability_id": "integrations.health_get",
+      "effect": "read",
+      "show": "Resolve the provider from this read. Do not paste a provider name into the plan."
+    },
+    {
+      "mode": "dry_run",
+      "needs_yes": true,
+      "credit_ceiling": 0,
+      "params": {
+        "record_id": "FROM_ASSERT_OR_MATCH",
+        "provider": "FROM_HEALTH"
       },
       "id": "sync-one",
       "capability_id": "integrations.sync",
       "effect": "send",
-      "show": "One record per yes. provider is hubspot, salesforce, or attio. Queued is not done."
+      "show": "One record per yes, and only after a record id exists. Queued is not done."
     },
     {
       "mode": "live",
       "needs_yes": false,
       "credit_ceiling": 0,
       "params": {
-        "provider": "hubspot"
+        "provider": "FROM_HEALTH"
       },
       "id": "read-health",
       "capability_id": "integrations.health_get",
       "effect": "read",
-      "show": "Read queue_depth, failed, dead, and last success after the sync."
+      "show": "Read queue depth, failed, dead, and last success after the sync."
     }
   ]
 }

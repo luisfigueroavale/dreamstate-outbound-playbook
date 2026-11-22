@@ -54,8 +54,8 @@ Touches kept: 60. People kept: 58. A repeated like on the same post is one touch
 
 ## Keyword replies
 
-Added rule. Kept close, staff.
-Clash rejected: keyword already used by close.
+Added rule. Kept 11111111-1111-4111-8111-111111111111, 22222222-2222-4222-8222-222222222222.
+Clash rejected: keyword already used by 11111111-1111-4111-8111-111111111111.
 - cmt-1: The checklist covers the last week of the month.
 - cmt-2: The checklist covers the last week of the month.
 - cmt-3: Start with the close list.
@@ -83,7 +83,7 @@ Clash rejected: keyword already used by close.
 | --- | --- |
 | duplicate form | 1 |
 | fit is unknown | 1 |
-| keyword already used by close | 1 |
+| keyword already used by 11111111-1111-4111-8111-111111111111 | 1 |
 | mb-bounce: 7 day bounce 0.08 is over 0.02 | 1 |
 | mb-young: warmup is 3 days and the minimum is 14 | 1 |
 | missing email | 1 |

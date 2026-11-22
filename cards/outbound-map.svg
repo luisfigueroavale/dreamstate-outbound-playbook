@@ -1,39 +1,39 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1350" viewBox="0 0 1080 1350" role="img">
 <title>Find, fill, judge, write, hand off, record</title>
 <style>
-:root{--color-bg:#ffffff;--color-fg:#111111;--color-accent:#111111;--color-muted:#555555;--font-sans:Georgia,serif}
+:root{--color-bg:#f4f7f4;--color-fg:#14241c;--color-accent:#0e6b52;--color-muted:#5c6b64;--font-sans:"Avenir Next", "Segoe UI", sans-serif}
 text{font-family:var(--font-sans)}
 </style>
 <rect width="1080" height="1350" fill="var(--color-bg)"/>
 <text x="72" y="84" fill="var(--color-fg)" font-size="36">Find, fill, judge, write, hand off, record</text>
 <text x="72" y="128" fill="var(--color-muted)" font-size="22">Six steps. One seat each. A yes before anything leaves.</text>
 <rect x="72" y="196" width="936" height="160" fill="var(--color-bg)" stroke="var(--color-fg)" stroke-width="2"/>
-<text x="96" y="238" fill="var(--color-fg)" font-size="28">1. Find</text>
+<text x="96" y="238" fill="var(--color-accent)" font-size="28">1. Find</text>
 <text x="96" y="274" fill="var(--color-muted)" font-size="20">Lead Sourcer</text>
 <text x="96" y="300" fill="var(--color-muted)" font-size="20">Free preview, then a quoted search</text>
 <text x="96" y="326" fill="var(--color-muted)" font-size="20">tables.sourcing.preview</text>
 <rect x="72" y="372" width="936" height="160" fill="var(--color-bg)" stroke="var(--color-fg)" stroke-width="2"/>
-<text x="96" y="414" fill="var(--color-fg)" font-size="28">2. Fill</text>
+<text x="96" y="414" fill="var(--color-accent)" font-size="28">2. Fill</text>
 <text x="96" y="450" fill="var(--color-muted)" font-size="20">Lead Sourcer</text>
 <text x="96" y="476" fill="var(--color-muted)" font-size="20">Stop at the first verified email</text>
 <text x="96" y="502" fill="var(--color-muted)" font-size="20">provider.enrich.email</text>
 <rect x="72" y="548" width="936" height="160" fill="var(--color-bg)" stroke="var(--color-fg)" stroke-width="2"/>
-<text x="96" y="590" fill="var(--color-fg)" font-size="28">3. Judge</text>
+<text x="96" y="590" fill="var(--color-accent)" font-size="28">3. Judge</text>
 <text x="96" y="626" fill="var(--color-muted)" font-size="20">Outbound Lead</text>
 <text x="96" y="652" fill="var(--color-muted)" font-size="20">Score 0 to 100, quote one row</text>
 <text x="96" y="678" fill="var(--color-muted)" font-size="20">column.ai_fit_score, 0.04 a row</text>
 <rect x="72" y="724" width="936" height="160" fill="var(--color-bg)" stroke="var(--color-fg)" stroke-width="2"/>
-<text x="96" y="766" fill="var(--color-fg)" font-size="28">4. Write</text>
+<text x="96" y="766" fill="var(--color-accent)" font-size="28">4. Write</text>
 <text x="96" y="802" fill="var(--color-muted)" font-size="20">Outbound Copywriter</text>
 <text x="96" y="828" fill="var(--color-muted)" font-size="20">One note from a fact you can point at</text>
 <text x="96" y="854" fill="var(--color-muted)" font-size="20">No invented customer</text>
 <rect x="72" y="900" width="936" height="160" fill="var(--color-bg)" stroke="var(--color-fg)" stroke-width="2"/>
-<text x="96" y="942" fill="var(--color-fg)" font-size="28">5. Hand off</text>
+<text x="96" y="942" fill="var(--color-accent)" font-size="28">5. Hand off</text>
 <text x="96" y="978" fill="var(--color-muted)" font-size="20">Sequences and Deliverability</text>
 <text x="96" y="1004" fill="var(--color-muted)" font-size="20">A draft sequence is free</text>
 <text x="96" y="1030" fill="var(--color-muted)" font-size="20">Enrollment waits for a yes</text>
 <rect x="72" y="1076" width="936" height="160" fill="var(--color-bg)" stroke="var(--color-fg)" stroke-width="2"/>
-<text x="96" y="1118" fill="var(--color-fg)" font-size="28">6. Record</text>
+<text x="96" y="1118" fill="var(--color-accent)" font-size="28">6. Record</text>
 <text x="96" y="1154" fill="var(--color-muted)" font-size="20">Reply Manager</text>
 <text x="96" y="1180" fill="var(--color-muted)" font-size="20">Sync returns queued, not done</text>
 <text x="96" y="1206" fill="var(--color-muted)" font-size="20">Read integrations.health_get</text>
