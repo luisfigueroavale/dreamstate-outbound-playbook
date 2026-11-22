@@ -6,7 +6,7 @@ Two worksheets, both resolved at run time. Warm touches: row_kind record, extern
 
 ## Call
 
-tables.rows.upsert is 0 credits and a write. dry_run first, quote, wait for the owner's yes on that item. Send the same idempotency_key on the live call as on the dry run. One call per worksheet.
+tables.rows.upsert is 0 credits and a write. dry_run first, quote, wait for the owner's yes on that item. Send the same idempotency_key on the live call as on the dry run. One call per row. The touch key or the person id is that row's identity.
 
 ## Show the owner
 

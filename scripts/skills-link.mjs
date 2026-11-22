@@ -20,8 +20,12 @@ for (const [target, linkPath] of links) {
   try {
     const stat = lstatSync(full);
     if (stat.isSymbolicLink()) rmSync(full);
-    else {
+    else if (stat.isDirectory()) {
       console.log(`${linkPath} is a real directory. Leave it in place.`);
+      continue;
+    } else {
+      console.error(`${linkPath} is a file. Remove it before linking.`);
+      process.exitCode = 1;
       continue;
     }
   } catch {

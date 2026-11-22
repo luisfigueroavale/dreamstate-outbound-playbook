@@ -33,13 +33,20 @@ function stopped(reason, rules, revision) {
 
 export function mergeKeywordRule(input = {}) {
   const revision = input.expected_revision;
-  const current = Array.isArray(input.rules) ? input.rules.map(copyRule) : [];
+  if (!Array.isArray(input.rules)) {
+    return stopped("rules must be a list", [], revision);
+  }
+  const current = input.rules.map(copyRule);
   if (!Number.isInteger(revision) || revision < 1) {
     return stopped("expected_revision must be an integer above 0", current, revision);
   }
   if (current.length > MAX_RULES) return stopped("at most 20 rules", current, revision);
+  const seenIds = new Set();
   for (const rule of current) {
     if (!rule.id) return stopped("an existing rule is missing its id", current, revision);
+    const id = String(rule.id);
+    if (seenIds.has(id)) return stopped("a rule id is repeated", current, revision);
+    seenIds.add(id);
     const count = keywordsOf(rule).length;
     if (count < 1 || count > MAX_KEYWORDS) return stopped("each rule needs 1 to 20 keywords", current, revision);
   }

@@ -1,6 +1,7 @@
 import { execSync } from "node:child_process";
-import { existsSync, readdirSync, readFileSync, readlinkSync, statSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync, readlinkSync, realpathSync, statSync } from "node:fs";
 import path from "node:path";
+import { pathToFileURL } from "node:url";
 import { buildCallPlans } from "./lib/call-plans.mjs";
 import { buildGraphs } from "./lib/graphs.mjs";
 import { renderCard } from "./cards.mjs";
@@ -248,7 +249,7 @@ const strict = options.strict ?? false;
   return { ok: errors.length === 0, errors, textFiles: textFiles.length, skills: skillDirs.length };
 }
 
-const isDirect = process.argv[1] && import.meta.url === new URL(`file://${process.argv[1]}`).href;
+const isDirect = process.argv[1] && import.meta.url === pathToFileURL(realpathSync(process.argv[1])).href;
 if (isDirect) {
   const result = runChecks(process.cwd(), { strict: process.argv.includes("--strict") });
   if (!result.ok) {

@@ -119,6 +119,9 @@ test("keyword merge keeps other rules and rejects a clash", () => {
   assert.equal(clash.rules[0].dm_message, "kept");
   assert.equal(mergeKeywordRule({ expected_revision: 2, rules: current.rules, rule: { keywords: "books" } }).ok, false);
   assert.equal(mergeKeywordRule({ expected_revision: "4", rules: current.rules, rule: { keywords: ["books"] } }).expected_revision, null);
+  assert.equal(mergeKeywordRule({ expected_revision: 2, rules: null, rule: { keywords: ["books"] } }).ok, false);
+  const repeated = { id: "11111111-1111-4111-8111-111111111111", keywords: ["close"], dm_message: "kept" };
+  assert.equal(mergeKeywordRule({ expected_revision: 2, rules: [repeated, { ...repeated }], rule: { keywords: ["books"] } }).ok, false);
 });
 
 test("reply pick is stable and an empty list stops", () => {
