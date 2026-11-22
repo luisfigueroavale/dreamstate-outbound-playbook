@@ -30,8 +30,8 @@ text{font-family:var(--font-sans)}
 <rect x="72" y="900" width="936" height="160" fill="var(--color-bg)" stroke="var(--color-fg)" stroke-width="2"/>
 <text x="96" y="942" fill="var(--color-accent)" font-size="28">5. Hand off</text>
 <text x="96" y="978" fill="var(--color-muted)" font-size="20">Sequences and Deliverability</text>
-<text x="96" y="1004" fill="var(--color-muted)" font-size="20">A draft sequence is free</text>
-<text x="96" y="1030" fill="var(--color-muted)" font-size="20">Enrollment waits for a yes</text>
+<text x="96" y="1004" fill="var(--color-muted)" font-size="20">The draft write needs a yes</text>
+<text x="96" y="1030" fill="var(--color-muted)" font-size="20">Enrollment is its own yes</text>
 <rect x="72" y="1076" width="936" height="160" fill="var(--color-bg)" stroke="var(--color-fg)" stroke-width="2"/>
 <text x="96" y="1118" fill="var(--color-accent)" font-size="28">6. Record</text>
 <text x="96" y="1154" fill="var(--color-muted)" font-size="20">Reply Manager</text>
