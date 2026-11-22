@@ -2,12 +2,12 @@
   "kind": "workflow",
   "status": "disabled",
   "name": "form-to-crm",
-  "summary": "Classify one inbound form, then wait. A sync is a separate yes.",
+  "summary": "Normalise one inbound form, then wait. Classify and the sync live in the call plan.",
   "import_with": "workflow.automations.import",
   "preflight_with": "workflow.automations.import_preflight",
   "lint_with": "workflow.automations.lint",
   "document": {
-    "description": "Manual in the graph. The webhook source is attached on a worksheet, with a secret, before this runs.",
+    "description": "Manual in the graph. The webhook source is attached on a worksheet, with a secret, before this runs. classify-crm-match stays in the call plan. This graph has no CRM search results to pass into it.",
     "nodes": [
       {
         "id": "trigger",
@@ -111,7 +111,7 @@
         }
       },
       {
-        "id": "classify-crm-match",
+        "id": "approve-sync",
         "type": "action",
         "position": {
           "x": 0,
@@ -119,71 +119,11 @@
         },
         "data": {
           "kind": "action",
-          "subtype": "code",
-          "label": "classify-crm-match",
-          "config": {
-            "source": "function result(fields) {\n  return {\n    class: fields.class,\n    reason: fields.reason,\n    sync_allowed: Boolean(fields.record_id),\n    record_id: fields.record_id ?? null,\n    next: fields.next,\n  };\n}\n\nfunction classifyCrmMatch(input = {}) {\n  if (input.status === \"error\" || input.error) {\n    return result({\n      class: \"failed\",\n      reason: String(input.error || \"search error\"),\n      record_id: null,\n      next: \"hold\",\n    });\n  }\n  const email = String(input.email ?? \"\").trim().toLowerCase();\n  if (!email) {\n    return result({\n      class: \"failed\",\n      reason: \"missing email\",\n      record_id: null,\n      next: \"hold\",\n    });\n  }\n  const records = Array.isArray(input.records) ? input.records : [];\n  const exact = records.filter((record) => String(record.email ?? \"\").trim().toLowerCase() === email && email);\n  if (exact.length === 1) {\n    const recordId = exact[0].id ?? null;\n    return result({\n      class: \"existing\",\n      reason: recordId ? \"one exact email match\" : \"one exact email match without a record id\",\n      record_id: recordId,\n      next: recordId ? \"sync\" : \"hold\",\n    });\n  }\n  if (exact.length > 1) {\n    return result({\n      class: \"ambiguous\",\n      reason: \"more than one exact email match\",\n      record_id: null,\n      next: \"hold\",\n    });\n  }\n  if (records.length > 0) {\n    return result({\n      class: \"ambiguous\",\n      reason: \"name match without one exact email\",\n      record_id: null,\n      next: \"hold\",\n    });\n  }\n  return result({\n    class: \"new\",\n    reason: \"no matching record\",\n    record_id: null,\n    next: \"assert_record\",\n  });\n}\n\nresult = classifyCrmMatch(typeof payload === \"undefined\" ? {} : payload);\n",
-            "output_schema": {
-              "type": "object",
-              "additionalProperties": false,
-              "required": [
-                "class",
-                "reason",
-                "sync_allowed",
-                "record_id",
-                "next"
-              ],
-              "properties": {
-                "class": {
-                  "type": "string"
-                },
-                "reason": {
-                  "type": "string"
-                },
-                "sync_allowed": {
-                  "type": "boolean"
-                },
-                "record_id": {
-                  "anyOf": [
-                    {
-                      "type": "string"
-                    },
-                    {
-                      "type": "null"
-                    }
-                  ]
-                },
-                "next": {
-                  "type": "string"
-                }
-              }
-            },
-            "input_mappings": {
-              "payload": {
-                "path": "trigger.payload",
-                "provenance": {
-                  "kind": "endpoint_schema",
-                  "source_ref": "trigger.payload"
-                }
-              }
-            }
-          }
-        }
-      },
-      {
-        "id": "approve-sync",
-        "type": "action",
-        "position": {
-          "x": 0,
-          "y": 480
-        },
-        "data": {
-          "kind": "action",
           "subtype": "request_approval",
           "label": "Approve one CRM sync",
           "config": {
             "title": "Approve one CRM sync",
-            "body": "Show the class and the one record. Approve is one integrations.sync. Hold sends nothing. Queued is not done.",
+            "body": "Show the class and the one record from the call plan. Approve is one integrations.sync. Hold sends nothing. Queued is not done.",
             "assignee": "owner",
             "outcomes": [
               "approve",
@@ -201,13 +141,8 @@
         "target": "normalise-inbound"
       },
       {
-        "id": "normalise-inbound-to-classify-crm-match",
+        "id": "normalise-inbound-to-approve-sync",
         "source": "normalise-inbound",
-        "target": "classify-crm-match"
-      },
-      {
-        "id": "classify-crm-match-to-approve-sync",
-        "source": "classify-crm-match",
         "target": "approve-sync"
       }
     ]

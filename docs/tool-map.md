@@ -41,6 +41,7 @@ Definition ids (source, provider, column) are not pasted as vendor names. Resolv
 | `sequence.outreach.analytics_variant_compare` | 0 credits | confirmed | free read | sequence_id, objective | dreamstate tools run sequence.outreach.analytics_variant_compare |
 | `crm.contact.find_email` | dry_run 0 credits, live up to 50 | confirmed | dry_run first, quote, wait for the owner's yes on that item | linkedin_url, full_name or first_name plus last_name, and domain | dreamstate tools run crm.contact.find_email |
 | `crm.records.search` | 0 credits | confirmed | free read | optional q, limit, offset | dreamstate tools run crm.records.search |
+| `crm.record_objects.list` | 0 credits | confirmed | free read | optional limit up to 100, cursor, include_counts | dreamstate tools run crm.record_objects.list |
 | `crm.records.assert` | 0 credits | confirmed | yes, it writes | object_key, identity { kind, value }, values | dreamstate tools run crm.records.assert |
 | `crm.signals.search_run` | quoted, high ceiling | confirmed | dry_run first, quote, wait for the owner's yes on that item | definition_id, and approved on live | dreamstate tools run crm.signals.search_run |
 | `integrations.signal_sources.list` | 0 credits | confirmed | free read | optional include_archived, limit | dreamstate tools run integrations.signal_sources.list |

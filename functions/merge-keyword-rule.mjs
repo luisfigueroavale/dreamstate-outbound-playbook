@@ -9,14 +9,6 @@ function keywordsOf(rule) {
   return (rule.keywords ?? []).map(cleanKeyword).filter(Boolean);
 }
 
-function sameKeywords(left, right) {
-  if (left.length !== right.length) return false;
-  for (let index = 0; index < left.length; index += 1) {
-    if (left[index] !== right[index]) return false;
-  }
-  return true;
-}
-
 function byCodePoint(left, right) {
   if (left === right) return 0;
   return left < right ? -1 : 1;
@@ -65,10 +57,13 @@ export function mergeKeywordRule(input = {}) {
   let changed = [];
   let added = [];
   if (previous) {
-    const before = keywordsOf(previous);
     nextRule = copyRule(previous);
     nextRule.keywords = incomingWords;
-    if (!sameKeywords(before, incomingWords)) changed = [String(previous.id)];
+    for (const key of Object.keys(incoming)) {
+      if (key === "id" || key === "keywords") continue;
+      nextRule[key] = incoming[key];
+    }
+    if (JSON.stringify(previous) !== JSON.stringify(nextRule)) changed = [String(previous.id)];
   } else {
     nextRule = copyRule(incoming);
     delete nextRule.id;

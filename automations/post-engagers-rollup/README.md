@@ -1,6 +1,6 @@
 # Post engagers rollup
 
-Collect engagers of your own recent posts, roll them into a touch log and a people worksheet, quote a fit score, and write a tier and a reason.
+Collect engagers of your own recent posts, roll them into a touch log and a people worksheet, quote a fit score, and write a tier and a reason. tier-engagers is a call-plan step, not a graph node, because the graph has no fit rules or score. The tier write passes subject_id from the person.
 
 ## When
 

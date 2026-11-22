@@ -16,7 +16,7 @@ A form should land in the CRM. The Dreamstate skill for records is `dreamstate-c
 1. Attach `source.webhook_source` with require_secret true (`references/webhook.md`).
 2. Normalise the email and hold bad rows (`references/normalise.md`).
 3. Search the CRM and classify the match (`references/class.md`).
-4. Assert a person record when next is assert_record (`references/assert.md`).
+4. List record object types, then assert a record when next is assert_record (`references/assert.md`).
 5. Read the connected provider, then sync one record (`references/sync.md`).
 6. Read health again and do not call queued done (`references/health.md`).
 
@@ -26,6 +26,7 @@ A form should land in the CRM. The Dreamstate skill for records is `dreamstate-c
 | --- | --- | --- | --- |
 | 1 | `tables.table_sources.attach` | dry_run | yes |
 | 3 | `crm.records.search` | live | no |
+| 4 | `crm.record_objects.list` | live | no |
 | 4 | `crm.records.assert` | dry_run | yes |
 | 5 | `integrations.health_get` | live | no |
 | 5 | `integrations.sync` | dry_run | yes |

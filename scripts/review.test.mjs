@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { cpSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 import test from "node:test";
 import { classifyCrmMatch } from "../functions/classify-crm-match.mjs";
 import { checkDmText } from "../functions/check-dm-text.mjs";
@@ -17,14 +18,19 @@ import { loadWordList } from "./lib/words.mjs";
 const AS_OF = "2026-11-16T12:00:00.000Z";
 const tiers = JSON.parse(readFileSync(new URL("../settings/tiers.json", import.meta.url), "utf8"));
 
+const repoRoot = fileURLToPath(new URL("..", import.meta.url));
+
 function copyTree() {
   const dir = mkdtempSync(path.join(tmpdir(), "playbook-"));
-  cpSync("/workspace", dir, {
+  const skipTop = new Set([".git", "node_modules", "output", "work"]);
+  cpSync(repoRoot, dir, {
     recursive: true,
     filter(entryPath) {
-      const rel = entryPath.slice("/workspace".length);
-      if (rel.startsWith("/.git") || rel.startsWith("/node_modules") || rel.startsWith("/output") || rel.startsWith("/work")) return false;
-      if (rel === "/.banned-terms.local") return false;
+      const rel = path.relative(repoRoot, entryPath);
+      if (!rel || rel === ".") return true;
+      const top = rel.split(path.sep)[0];
+      if (skipTop.has(top)) return false;
+      if (rel === ".banned-terms.local") return false;
       return true;
     },
   });
@@ -89,6 +95,26 @@ test("editing an existing keyword rule is reported as changed", () => {
   assert.equal(mergeKeywordRule({ rules: [rule], rule: { keywords: ["books"] } }).ok, false);
 });
 
+test("editing a keyword rule applies the other fields the caller sent", () => {
+  const rule = {
+    id: "11111111-1111-4111-8111-111111111111",
+    keywords: ["close"],
+    dm_enabled: true,
+    dm_message: "old share",
+    comment_reply_sent: "thanks for the note",
+  };
+  const edited = mergeKeywordRule({
+    expected_revision: 3,
+    rules: [rule],
+    rule: { id: rule.id, keywords: ["close"], dm_message: "new share" },
+  });
+  assert.equal(edited.ok, true);
+  assert.equal(edited.rules[0].dm_message, "new share");
+  assert.equal(edited.rules[0].dm_enabled, true);
+  assert.equal(edited.rules[0].comment_reply_sent, "thanks for the note");
+  assert.deepEqual(edited.diff.changed, [rule.id]);
+});
+
 test("provider managed domains are skipped and missing DNS or a high cap is a hold", () => {
   const graded = gradeEmailStack({
     rules: { ...tiers, spf_observed: true, dkim_observed: true, dmarc_observed: true, bounce_7d_max: 0.02, warmup_min_days: 14, daily_cap_max: 40 },
@@ -148,6 +174,19 @@ test("roll up skips a post with no id, keeps the longer name, and reruns match",
 
 test("graph code nodes call the function and map a payload", () => {
   const graphs = buildGraphs();
+  const plans = buildCallPlans();
+  assert.equal(graphs["form-to-crm"].document.nodes.some((node) => node.id === "classify-crm-match"), false);
+  assert.equal(graphs["post-engagers-rollup"].document.nodes.some((node) => node.id === "tier-engagers"), false);
+  assert.equal(graphs["comment-keyword-share"].document.nodes.some((node) => node.id === "pick-reply-line"), false);
+  assert.equal(plans["form-to-crm"].steps.some((item) => item.local_function === "classify-crm-match"), true);
+  assert.equal(plans["post-engagers-rollup"].steps.some((item) => item.local_function === "tier-engagers"), true);
+  assert.equal(plans["comment-keyword-share"].steps.some((item) => item.local_function === "pick-reply-line"), true);
+  const form = plans["form-to-crm"];
+  const formOrder = form.steps.map((item) => item.id);
+  assert.ok(formOrder.indexOf("list-objects") < formOrder.indexOf("assert-record"));
+  assert.equal(form.steps.find((item) => item.id === "assert-record").params.object_key, "RESOLVE_AT_RUN_TIME");
+  assert.equal(plans["post-engagers-rollup"].steps.find((item) => item.id === "write-tier").params.subject_id, "PERSON_ID");
+  assert.equal(plans["comment-keyword-share"].steps.find((item) => item.id === "log").params.external_key, "COMMENT_ID");
   for (const graph of Object.values(graphs)) {
     const codes = graph.document.nodes.filter((node) => node.data.subtype === "code");
     assert.ok(codes.length > 0);
@@ -156,6 +195,12 @@ test("graph code nodes call the function and map a payload", () => {
       assert.match(source, /result = /);
       assert.equal(node.data.config.input_mappings.payload.provenance.kind, "endpoint_schema");
       assert.equal(node.data.config.output_schema.additionalProperties, false);
+      const upstream = graph.document.edges.find((edge) => edge.target === node.id);
+      const previous = graph.document.nodes.find((item) => item.id === upstream?.source);
+      if (previous?.data.subtype === "code") {
+        assert.equal(node.data.config.input_mappings.payload.path, `${previous.id}.result`);
+        assert.notEqual(node.data.config.input_mappings.payload.path, "trigger.payload");
+      }
     }
   }
 });

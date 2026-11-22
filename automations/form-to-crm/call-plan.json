@@ -58,14 +58,24 @@
       "id": "classify",
       "local_function": "classify-crm-match",
       "effect": "local",
-      "show": "A new row returns next assert_record. A sync waits until there is a record id."
+      "show": "Runs here, not in the graph. The graph has no CRM search results. A new row returns next assert_record. A sync waits until there is a record id."
+    },
+    {
+      "mode": "live",
+      "needs_yes": false,
+      "credit_ceiling": 0,
+      "params": {},
+      "id": "list-objects",
+      "capability_id": "crm.record_objects.list",
+      "effect": "read",
+      "show": "Free read. Copy object_key from this list. Do not paste a type name into the plan."
     },
     {
       "mode": "dry_run",
       "needs_yes": true,
       "credit_ceiling": 0,
       "params": {
-        "object_key": "person",
+        "object_key": "RESOLVE_AT_RUN_TIME",
         "identity": {
           "kind": "email",
           "value": "NORMALISED_EMAIL"

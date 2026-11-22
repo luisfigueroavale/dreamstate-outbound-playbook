@@ -1,3 +1,9 @@
+function unexpectedNames(data, schema) {
+  if (schema.additionalProperties !== false) return [];
+  const known = new Set(Object.keys(schema.properties ?? {}));
+  return Object.keys(data).filter((name) => !known.has(name));
+}
+
 export function validate(data, schema, path = "$") {
   const errors = [];
   if (!schema || typeof schema !== "object") return errors;
@@ -11,11 +17,7 @@ export function validate(data, schema, path = "$") {
     for (const key of schema.required ?? []) {
       if (data[key] === undefined) errors.push(`${path}.${key} is required`);
     }
-    const allowedKeys = new Set(Object.keys(schema.properties ?? {}));
-    const extraKeys = Object.keys(data).filter((key) => !allowedKeys.has(key));
-    if (schema.additionalProperties === false) {
-      for (const key of extraKeys) errors.push(`${path}.${key} is not allowed`);
-    }
+    for (const name of unexpectedNames(data, schema)) errors.push(`${path}.${name} is not allowed`);
     for (const [key, child] of Object.entries(schema.properties ?? {})) {
       if (data[key] !== undefined) errors.push(...validate(data[key], child, `${path}.${key}`));
     }

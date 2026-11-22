@@ -137,7 +137,8 @@
       "params": {},
       "id": "tier",
       "local_function": "tier-engagers",
-      "effect": "local"
+      "effect": "local",
+      "show": "Runs here, not in the graph. The graph has no fit rules or score."
     },
     {
       "mode": "dry_run",
@@ -145,12 +146,13 @@
       "credit_ceiling": 0,
       "params": {
         "table_id": "RESOLVE_AT_RUN_TIME",
-        "row_kind": "person"
+        "row_kind": "person",
+        "subject_id": "PERSON_ID"
       },
       "id": "write-tier",
       "capability_id": "tables.rows.upsert",
       "effect": "write",
-      "show": "Write the tier and the reason back onto Warm people."
+      "show": "Write the tier and the reason back onto Warm people. subject_id is the person id."
     },
     {
       "mode": "live",

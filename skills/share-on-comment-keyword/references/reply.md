@@ -2,7 +2,7 @@
 
 ## Inputs
 
-comment_id and account_id resolved at run time. text is the line from pick-reply-line. Lines come from settings.local/reply-lines.md. An empty file stops. The hash is the first 8 hex digits of SHA-256 of the comment id, modulo the line count. The same comment always gets the same line.
+comment_id and account_id resolved at run time. text is the line from pick-reply-line, which runs in the call plan. The graph has no reply list. Lines come from settings.local/reply-lines.md. An empty file stops. The hash is the first 8 hex digits of SHA-256 of the comment id, modulo the line count. The same comment always gets the same line.
 
 ## Call
 

@@ -6,7 +6,7 @@ The current rules, the revision, and one rule to add or edit. Keywords are compa
 
 ## Call
 
-Local function merge-keyword-rule. It keeps every other rule. A keyword already used by another rule is a clash and the old set is returned.
+Local function merge-keyword-rule. It keeps every other rule. On an edit, fields the caller sent besides the id are applied, and fields they did not send stay. A keyword already used by another rule is a clash and the old set is returned.
 
 ## Show the owner
 

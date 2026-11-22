@@ -41,7 +41,14 @@ export function buildCallPlans() {
           params: { q: "NORMALISED_EMAIL" },
           show: "Pass the normalised email. An error is class failed.",
         }),
-        step({ id: "classify", local_function: "classify-crm-match", effect: "local", show: "A new row returns next assert_record. A sync waits until there is a record id." }),
+        step({ id: "classify", local_function: "classify-crm-match", effect: "local", show: "Runs here, not in the graph. The graph has no CRM search results. A new row returns next assert_record. A sync waits until there is a record id." }),
+        step({
+          id: "list-objects",
+          capability_id: "crm.record_objects.list",
+          effect: "read",
+          params: {},
+          show: "Free read. Copy object_key from this list. Do not paste a type name into the plan.",
+        }),
         step({
           id: "assert-record",
           capability_id: "crm.records.assert",
@@ -49,7 +56,7 @@ export function buildCallPlans() {
           effect: "write",
           needs_yes: true,
           params: {
-            object_key: "person",
+            object_key: "RESOLVE_AT_RUN_TIME",
             identity: { kind: "email", value: "NORMALISED_EMAIL" },
             values: {},
           },
@@ -156,15 +163,15 @@ export function buildCallPlans() {
           params: { table_id: "RESOLVE_AT_RUN_TIME", column_key: "fit", limit: 1 },
           show: "dry_run first, quote, wait for the owner's yes on that item. Then live with max_credits and an idempotency_key. Default ceiling 50.",
         }),
-        step({ id: "tier", local_function: "tier-engagers", effect: "local" }),
+        step({ id: "tier", local_function: "tier-engagers", effect: "local", show: "Runs here, not in the graph. The graph has no fit rules or score." }),
         step({
           id: "write-tier",
           capability_id: "tables.rows.upsert",
           mode: "dry_run",
           effect: "write",
           needs_yes: true,
-          params: { table_id: "RESOLVE_AT_RUN_TIME", row_kind: "person" },
-          show: "Write the tier and the reason back onto Warm people.",
+          params: { table_id: "RESOLVE_AT_RUN_TIME", row_kind: "person", subject_id: "PERSON_ID" },
+          show: "Write the tier and the reason back onto Warm people. subject_id is the person id.",
         }),
         step({
           id: "preview-other-posts",
@@ -228,7 +235,7 @@ export function buildCallPlans() {
           params: { artifact_id: "RESOLVE_AT_RUN_TIME", platform: "linkedin", expected_revision: "FROM_LIST", rules: "FROM_MERGE" },
           show: "Destructive. Send the full set. Show added, changed, and kept.",
         }),
-        step({ id: "pick-line", local_function: "pick-reply-line", effect: "local", show: "Same comment id, same line. Empty list stops." }),
+        step({ id: "pick-line", local_function: "pick-reply-line", effect: "local", show: "Runs here, not in the graph. The graph has no reply list. Same comment id, same line. Empty list stops." }),
         step({
           id: "preview-reply",
           capability_id: "social.comments.reply",
@@ -253,8 +260,8 @@ export function buildCallPlans() {
           mode: "dry_run",
           effect: "write",
           needs_yes: true,
-          params: { table_id: "RESOLVE_AT_RUN_TIME", row_kind: "record" },
-          show: "Status is previewed, approved, posted, or failed, with a reason.",
+          params: { table_id: "RESOLVE_AT_RUN_TIME", row_kind: "record", external_key: "COMMENT_ID" },
+          show: "Status is previewed, approved, posted, or failed, with a reason. external_key is the comment id.",
         }),
         step({
           id: "dm-existing-thread",

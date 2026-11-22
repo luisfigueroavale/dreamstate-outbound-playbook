@@ -25,7 +25,7 @@ const strict = options.strict ?? false;
   const LINKEDIN_RE = new RegExp(
     ["urn" + ":li:", "linkedin.com/" + "in/", "linkedin.com/" + "posts/", "activity:" + "\\d{8,}"].join("|"),
   );
-  const MACHINE_PATHS = ["/" + "Users" + "/", "/" + "home" + "/", "C:" + "\\Users"];
+  const MACHINE_PATHS = ["/" + "Users" + "/", "/" + "home" + "/", "C:" + "\\Users", "/" + "workspace" + "/"];
   const NETWORK_RE = /\bfetch\s*\(|\baxios\b|\bhttps?\.request\b|\bnet\.connect\b/;
 
   function walk(dir, out = []) {

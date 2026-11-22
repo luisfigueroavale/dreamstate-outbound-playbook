@@ -48,7 +48,7 @@
       "id": "pick-line",
       "local_function": "pick-reply-line",
       "effect": "local",
-      "show": "Same comment id, same line. Empty list stops."
+      "show": "Runs here, not in the graph. The graph has no reply list. Same comment id, same line. Empty list stops."
     },
     {
       "mode": "dry_run",
@@ -84,12 +84,13 @@
       "credit_ceiling": 0,
       "params": {
         "table_id": "RESOLVE_AT_RUN_TIME",
-        "row_kind": "record"
+        "row_kind": "record",
+        "external_key": "COMMENT_ID"
       },
       "id": "log",
       "capability_id": "tables.rows.upsert",
       "effect": "write",
-      "show": "Status is previewed, approved, posted, or failed, with a reason."
+      "show": "Status is previewed, approved, posted, or failed, with a reason. external_key is the comment id."
     },
     {
       "mode": "dry_run",

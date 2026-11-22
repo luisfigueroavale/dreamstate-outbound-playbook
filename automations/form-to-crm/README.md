@@ -1,6 +1,6 @@
 # Form to CRM
 
-One inbound form becomes one CRM decision. Missing and malformed emails stop. A personal mailbox is marked and held. A duplicate of the same email and form id is held. The CRM search runs before any push.
+One inbound form becomes one CRM decision. Missing and malformed emails stop. A personal mailbox is marked and held. A duplicate of the same email and form id is held. The CRM search runs before any push. classify-crm-match is a call-plan step, not a graph node, because the graph cannot see the search results.
 
 ## When
 
@@ -14,7 +14,7 @@ There is no form or webhook workflow trigger. `table_row_created` needs the webh
 
 ## What needs a yes
 
-`integrations.sync` once per record, and only when the class is `new` or `existing`. Ambiguous and failed do not sync. Provider is `hubspot`, `salesforce`, or `attio`.
+`tables.table_sources.attach`, `crm.records.assert`, and `integrations.sync` once per record. Assert only when next is assert_record. Ambiguous and failed do not sync. Read `crm.record_objects.list` first and copy object_key from that list. Read the provider from `integrations.health_get`.
 
 ## Failure cases
 

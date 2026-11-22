@@ -2,12 +2,12 @@
   "kind": "workflow",
   "status": "disabled",
   "name": "post-engagers-rollup",
-  "summary": "Roll up engagers of your own posts and tier them. Harvest and the fit column each wait for a yes.",
+  "summary": "Roll up engagers of your own posts. The tier lives in the call plan. Harvest and the fit column each wait for a yes.",
   "import_with": "workflow.automations.import",
   "preflight_with": "workflow.automations.import_preflight",
   "lint_with": "workflow.automations.lint",
   "document": {
-    "description": "Manual trigger. A schedule is a standing action and needs its own yes. Post ids and account ids are resolved at run time.",
+    "description": "Manual trigger. A schedule is a standing action and needs its own yes. Post ids and account ids are resolved at run time. tier-engagers stays in the call plan. This graph has no fit rules or score to pass into it.",
     "nodes": [
       {
         "id": "trigger",
@@ -67,52 +67,11 @@
         }
       },
       {
-        "id": "tier-engagers",
-        "type": "action",
-        "position": {
-          "x": 0,
-          "y": 320
-        },
-        "data": {
-          "kind": "action",
-          "subtype": "code",
-          "label": "tier-engagers",
-          "config": {
-            "source": "const DAY = 86400000;\n\nfunction ageDays(asOf, seen) {\n  const end = Date.parse(asOf);\n  const start = Date.parse(seen);\n  if (Number.isNaN(end) || Number.isNaN(start)) return null;\n  return (end - start) / DAY;\n}\n\nfunction baseTier(person, rules) {\n  if (person.in_team) return { tier: \"hold\", reason: \"person is on the team list\" };\n  if (person.fit === null || person.fit === undefined || person.fit === \"\") {\n    return { tier: \"hold\", reason: \"fit is unknown\" };\n  }\n  const fit = Number(person.fit);\n  const commented = Number(person.comment_count || 0) > 0;\n  const repeated = Number(person.distinct_posts || 0) >= 2;\n  if (fit >= rules.top_fit && (commented || repeated)) {\n    return { tier: \"1\", reason: \"fit is at the top line and they engaged more than once or left a comment\" };\n  }\n  if (fit >= rules.middle_fit) {\n    return { tier: \"2\", reason: \"fit is at the middle line\" };\n  }\n  return { tier: \"3\", reason: \"fit is under the middle line\" };\n}\n\nfunction dropOne(tier) {\n  if (tier === \"1\") return \"2\";\n  if (tier === \"2\") return \"3\";\n  return tier;\n}\n\nfunction tierEngagers(input = {}) {\n  const rules = {\n    top_fit: 75,\n    middle_fit: 55,\n    recency_days: 30,\n    tier_1_cap_per_week: 10,\n    ...input.rules,\n  };\n  const team = new Set((input.exclude_person_ids ?? []).map((id) => String(id)));\n  const rows = (input.people ?? []).map((person) => {\n    const inTeam = Boolean(person.in_team) || team.has(person.person_id);\n    const decided = baseTier({ ...person, in_team: inTeam }, rules);\n    let tier = decided.tier;\n    let reason = decided.reason;\n    const age = ageDays(input.as_of, person.last_seen);\n    if (tier !== \"hold\" && age !== null && age > rules.recency_days) {\n      const next = dropOne(tier);\n      if (next !== tier) {\n        reason = `${reason}. Last touch is outside ${rules.recency_days} days, so the tier drops from ${tier} to ${next}`;\n        tier = next;\n      } else {\n        reason = `${reason}. Last touch is outside ${rules.recency_days} days and this is already the lowest tier`;\n      }\n    }\n    return {\n      person_id: person.person_id,\n      fit: person.fit ?? null,\n      tier,\n      reason,\n      last_seen: person.last_seen ?? null,\n    };\n  });\n\n  const tierOne = rows\n    .filter((row) => row.tier === \"1\")\n    .sort((a, b) => {\n      const fitDelta = Number(b.fit) - Number(a.fit);\n      if (fitDelta !== 0) return fitDelta;\n      const seen = String(b.last_seen).localeCompare(String(a.last_seen));\n      if (seen !== 0) return seen;\n      return a.person_id.localeCompare(b.person_id);\n    });\n  const overflow = new Set(tierOne.slice(rules.tier_1_cap_per_week).map((row) => row.person_id));\n  for (const row of rows) {\n    if (!overflow.has(row.person_id)) continue;\n    row.reason = `${row.reason}. Over the weekly cap of ${rules.tier_1_cap_per_week}, so this row moves to tier 2`;\n    row.tier = \"2\";\n  }\n  rows.sort((a, b) => a.person_id.localeCompare(b.person_id));\n  return { rows, rules };\n}\n\nresult = tierEngagers(typeof payload === \"undefined\" ? {} : payload);\n",
-            "output_schema": {
-              "type": "object",
-              "additionalProperties": false,
-              "required": [
-                "rows",
-                "rules"
-              ],
-              "properties": {
-                "rows": {
-                  "type": "array"
-                },
-                "rules": {
-                  "type": "object"
-                }
-              }
-            },
-            "input_mappings": {
-              "payload": {
-                "path": "trigger.payload",
-                "provenance": {
-                  "kind": "endpoint_schema",
-                  "source_ref": "trigger.payload"
-                }
-              }
-            }
-          }
-        }
-      },
-      {
         "id": "approve-score",
         "type": "action",
         "position": {
           "x": 0,
-          "y": 480
+          "y": 320
         },
         "data": {
           "kind": "action",
@@ -138,13 +97,8 @@
         "target": "roll-up-engagers"
       },
       {
-        "id": "roll-up-engagers-to-tier-engagers",
+        "id": "roll-up-engagers-to-approve-score",
         "source": "roll-up-engagers",
-        "target": "tier-engagers"
-      },
-      {
-        "id": "tier-engagers-to-approve-score",
-        "source": "tier-engagers",
         "target": "approve-score"
       }
     ]
