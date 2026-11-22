@@ -1,0 +1,9 @@
+{
+  "status": "working defaults",
+  "top_fit": 75,
+  "middle_fit": 55,
+  "recency_days": 30,
+  "tier_1_cap_per_week": 10,
+  "scale": "0 to 100 from column.ai_fit_score",
+  "note": "Change these only after a learning note and a yes. Overflow past the weekly cap becomes tier 2."
+}

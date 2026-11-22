@@ -1,0 +1,14 @@
+{
+  "id": "email-stack",
+  "title": "What must be true before the first send",
+  "subtitle": "Free reads. A hold names the reason and the seat.",
+  "boxes": [
+    {"n": 1, "name": "Domains", "lines": ["List sending domains", "senders.domains.sending.list", "Free read"]},
+    {"n": 2, "name": "DNS", "lines": ["SPF, DKIM, and DMARC observed", "senders.domains.health_list", "Provider managed domains are skipped"]},
+    {"n": 3, "name": "Mailboxes", "lines": ["Connected mailboxes and caps", "senders.mailboxes.list", "Free read"]},
+    {"n": 4, "name": "Bounce", "lines": ["7 day bounce", "senders.mailboxes.health_get", "Unknown is not zero"]},
+    {"n": 5, "name": "Warmup", "lines": ["Age before a live sequence", "Warmup report, free", "Working default 14 days"]},
+    {"n": 6, "name": "Cap", "lines": ["A daily cap on every mailbox", "Suppression is a separate yes", "Figure on the rules page is to-check"]}
+  ],
+  "footer": "Run it with check-email-stack. Nothing is changed."
+}

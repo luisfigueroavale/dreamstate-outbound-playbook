@@ -1,0 +1,28 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["name", "status", "steps"],
+  "properties": {
+    "name": { "type": "string" },
+    "status": { "const": "disabled" },
+    "steps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "effect", "mode", "needs_yes", "credit_ceiling"],
+        "properties": {
+          "id": { "type": "string" },
+          "capability_id": { "type": "string" },
+          "local_function": { "type": "string" },
+          "effect": { "enum": ["read", "write", "send", "spend", "local"] },
+          "mode": { "type": "string" },
+          "needs_yes": { "type": "boolean" },
+          "credit_ceiling": { "type": "number" },
+          "params": { "type": "object" },
+          "show": { "type": "string" }
+        }
+      }
+    }
+  }
+}

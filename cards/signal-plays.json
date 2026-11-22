@@ -1,0 +1,12 @@
+{
+  "id": "signal-plays",
+  "title": "Four rules before you write",
+  "subtitle": "Fit first. A reason to write now. Their words, not the trigger.",
+  "boxes": [
+    {"n": 1, "name": "Fit first", "lines": ["Score fit before a reason to write", "column.ai_fit_score, 0.04 a row", "Unknown fit is a hold"]},
+    {"n": 2, "name": "Three kinds", "lines": ["Standing fit", "A recent change at the company", "Direct interest in you"]},
+    {"n": 3, "name": "Keep the trigger", "lines": ["Write about their situation", "Do not quote the trigger back", "Copy comes from Company Context"]},
+    {"n": 4, "name": "One shape", "lines": ["An observation", "The problem in their words", "What changes, then one small ask"]}
+  ],
+  "footer": "Run it with pick-a-play. A send is still a separate yes."
+}

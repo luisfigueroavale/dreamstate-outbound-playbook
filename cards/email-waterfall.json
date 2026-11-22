@@ -1,0 +1,14 @@
+{
+  "id": "email-waterfall",
+  "title": "Pay for the lane that found the email",
+  "subtitle": "One column. Stop at the first verified hit. Hold the rest.",
+  "boxes": [
+    {"n": 1, "name": "Order", "lines": ["Read the lane order first", "sequence.outreach.enrichment_sequence_get", "Free read"]},
+    {"n": 2, "name": "Work email", "lines": ["Tries lanes, stops at a verified hit", "provider.enrich.email", "Card says up to 12.45 a row"]},
+    {"n": 3, "name": "Verify", "lines": ["0.45 an address", "tables.contacts.verify_email", "Catch-all is held"]},
+    {"n": 4, "name": "Phone", "lines": ["A separate column", "provider.enrich.person.waterfall", "Price varies. Quote it."]},
+    {"n": 5, "name": "One person", "lines": ["A single lookup, not a column", "crm.contact.find_email", "Dry run is free, live up to 50"]},
+    {"n": 6, "name": "Hold", "lines": ["Unknown and catch-all stay held", "Do not guess a mailbox", "Link the engine finder"]}
+  ],
+  "footer": "Run the math in the engine. Quote before a live row."
+}

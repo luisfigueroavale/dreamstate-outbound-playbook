@@ -1,0 +1,124 @@
+{
+  "name": "post-engagers-rollup",
+  "status": "disabled",
+  "steps": [
+    {
+      "mode": "live",
+      "needs_yes": false,
+      "credit_ceiling": 0,
+      "params": {},
+      "id": "list-senders",
+      "capability_id": "senders.linkedin_accounts.list",
+      "effect": "read",
+      "show": "Pick the sender at run time. Do not paste an account id into the repo."
+    },
+    {
+      "mode": "dry_run",
+      "needs_yes": true,
+      "credit_ceiling": 0,
+      "params": {
+        "worksheet_id": "RESOLVE_AT_RUN_TIME",
+        "linkedin_account_id": "RESOLVE_AT_RUN_TIME",
+        "post_id": "RESOLVE_AT_RUN_TIME"
+      },
+      "id": "harvest",
+      "capability_id": "visibility.linkedin.engagement_harvest",
+      "effect": "write",
+      "show": "Own posts only. Default 10, cap 25. 0 credits. Live needs a yes. On timeout, runs_get on the same key. Do not harvest again."
+    },
+    {
+      "mode": "live",
+      "needs_yes": false,
+      "credit_ceiling": 0,
+      "params": {
+        "harvest_id": "FROM_HARVEST"
+      },
+      "id": "status",
+      "capability_id": "visibility.linkedin.engagement_status",
+      "effect": "read"
+    },
+    {
+      "mode": "live",
+      "needs_yes": false,
+      "credit_ceiling": 0,
+      "params": {
+        "harvest_id": "FROM_HARVEST"
+      },
+      "id": "engagers",
+      "capability_id": "visibility.linkedin.engagement_engagers",
+      "effect": "read"
+    },
+    {
+      "mode": "live",
+      "needs_yes": false,
+      "credit_ceiling": 0,
+      "params": {},
+      "id": "roll-up",
+      "local_function": "roll-up-engagers",
+      "effect": "local",
+      "show": "Skip reposts and team ids."
+    },
+    {
+      "mode": "dry_run",
+      "needs_yes": true,
+      "credit_ceiling": 0,
+      "params": {
+        "table_id": "RESOLVE_AT_RUN_TIME",
+        "row_kind": "person"
+      },
+      "id": "upsert",
+      "capability_id": "tables.rows.upsert",
+      "effect": "write",
+      "show": "Write Warm touches and Warm people. Worksheet ids are resolved at run time."
+    },
+    {
+      "mode": "dry_run",
+      "needs_yes": true,
+      "credit_ceiling": 0,
+      "params": {
+        "table_id": "RESOLVE_AT_RUN_TIME",
+        "name": "Fit",
+        "binding_spec": {
+          "definition_id": "column.ai_fit_score"
+        }
+      },
+      "id": "add-fit",
+      "capability_id": "tables.columns.add",
+      "effect": "write",
+      "show": "0 credits to add the column. The score itself is quoted next."
+    },
+    {
+      "mode": "dry_run",
+      "needs_yes": true,
+      "credit_ceiling": 50,
+      "params": {
+        "table_id": "RESOLVE_AT_RUN_TIME",
+        "column_key": "fit",
+        "limit": 1
+      },
+      "id": "quote-fit",
+      "capability_id": "tables.columns.run",
+      "effect": "spend",
+      "show": "dry_run first, quote, wait for the owner's yes on that item. Then live with max_credits and an idempotency_key. Default ceiling 50."
+    },
+    {
+      "mode": "live",
+      "needs_yes": false,
+      "credit_ceiling": 0,
+      "params": {},
+      "id": "tier",
+      "local_function": "tier-engagers",
+      "effect": "local"
+    },
+    {
+      "mode": "dry_run",
+      "needs_yes": true,
+      "credit_ceiling": 50,
+      "params": {},
+      "id": "other-posts",
+      "capability_id": "source.engaged_with_account",
+      "effect": "spend",
+      "show": "Only for posts that are not yours. 1 credit a row on the card. Quote before the live run."
+    }
+  ]
+}

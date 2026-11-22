@@ -1,0 +1,15 @@
+{
+  "status": "working defaults",
+  "spf_observed": true,
+  "dkim_observed": true,
+  "dmarc_observed": true,
+  "bounce_7d_max": 0.02,
+  "warmup_min_days": 14,
+  "daily_cap_max": null,
+  "citations": {
+    "dns": "dreamstate-gtm-team/docs/rules.md names senders.domains.health_list for SPF, DKIM and DMARC",
+    "bounce_7d_max": "to-check. Working default 0.02. The rules page does not state this number.",
+    "warmup_min_days": "to-check. Working default 14. The rules page does not state this number.",
+    "daily_cap_max": "to-check. dreamstate-gtm-team/docs/rules.md does not state a daily cap figure."
+  }
+}

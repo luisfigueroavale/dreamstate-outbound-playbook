@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1350" viewBox="0 0 1080 1350" role="img">
+<title>Four rules before you write</title>
+<style>
+:root{--color-bg:#ffffff;--color-fg:#111111;--color-accent:#111111;--color-muted:#555555;--font-sans:Georgia,serif}
+text{font-family:var(--font-sans)}
+</style>
+<rect width="1080" height="1350" fill="var(--color-bg)"/>
+<text x="72" y="84" fill="var(--color-fg)" font-size="36">Four rules before you write</text>
+<text x="72" y="128" fill="var(--color-muted)" font-size="22">Fit first. A reason to write now. Their words, not the</text>
+<text x="72" y="156" fill="var(--color-muted)" font-size="22">trigger.</text>
+<rect x="72" y="196" width="936" height="249" fill="var(--color-bg)" stroke="var(--color-fg)" stroke-width="2"/>
+<text x="96" y="238" fill="var(--color-fg)" font-size="28">1. Fit first</text>
+<text x="96" y="274" fill="var(--color-muted)" font-size="20">Score fit before a reason to write</text>
+<text x="96" y="300" fill="var(--color-muted)" font-size="20">column.ai_fit_score, 0.04 a row</text>
+<text x="96" y="326" fill="var(--color-muted)" font-size="20">Unknown fit is a hold</text>
+<rect x="72" y="461" width="936" height="249" fill="var(--color-bg)" stroke="var(--color-fg)" stroke-width="2"/>
+<text x="96" y="503" fill="var(--color-fg)" font-size="28">2. Three kinds</text>
+<text x="96" y="539" fill="var(--color-muted)" font-size="20">Standing fit</text>
+<text x="96" y="565" fill="var(--color-muted)" font-size="20">A recent change at the company</text>
+<text x="96" y="591" fill="var(--color-muted)" font-size="20">Direct interest in you</text>
+<rect x="72" y="726" width="936" height="249" fill="var(--color-bg)" stroke="var(--color-fg)" stroke-width="2"/>
+<text x="96" y="768" fill="var(--color-fg)" font-size="28">3. Keep the trigger</text>
+<text x="96" y="804" fill="var(--color-muted)" font-size="20">Write about their situation</text>
+<text x="96" y="830" fill="var(--color-muted)" font-size="20">Do not quote the trigger back</text>
+<text x="96" y="856" fill="var(--color-muted)" font-size="20">Copy comes from Company Context</text>
+<rect x="72" y="991" width="936" height="249" fill="var(--color-bg)" stroke="var(--color-fg)" stroke-width="2"/>
+<text x="96" y="1033" fill="var(--color-fg)" font-size="28">4. One shape</text>
+<text x="96" y="1069" fill="var(--color-muted)" font-size="20">An observation</text>
+<text x="96" y="1095" fill="var(--color-muted)" font-size="20">The problem in their words</text>
+<text x="96" y="1121" fill="var(--color-muted)" font-size="20">What changes, then one small ask</text>
+<text x="72" y="1302" fill="var(--color-fg)" font-size="20">Run it with pick-a-play. A send is still a separate yes.</text>
+</svg>

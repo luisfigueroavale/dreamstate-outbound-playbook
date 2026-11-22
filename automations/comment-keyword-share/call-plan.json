@@ -1,0 +1,111 @@
+{
+  "name": "comment-keyword-share",
+  "status": "disabled",
+  "steps": [
+    {
+      "mode": "live",
+      "needs_yes": false,
+      "credit_ceiling": 0,
+      "params": {
+        "artifact_id": "RESOLVE_AT_RUN_TIME",
+        "platform": "linkedin"
+      },
+      "id": "list-rules",
+      "capability_id": "social.outreach.keyword_dm_rules.list",
+      "effect": "read",
+      "show": "Read the revision. Keep every rule you did not mean to change."
+    },
+    {
+      "mode": "live",
+      "needs_yes": false,
+      "credit_ceiling": 0,
+      "params": {},
+      "id": "merge",
+      "local_function": "merge-keyword-rule",
+      "effect": "local",
+      "show": "A keyword clash returns the old set and a reason."
+    },
+    {
+      "mode": "dry_run",
+      "needs_yes": true,
+      "credit_ceiling": 0,
+      "params": {
+        "artifact_id": "RESOLVE_AT_RUN_TIME",
+        "platform": "linkedin",
+        "expected_revision": "FROM_LIST",
+        "rules": []
+      },
+      "id": "replace-rules",
+      "capability_id": "social.outreach.keyword_dm_rules.replace",
+      "effect": "write",
+      "show": "Destructive. Send the full set. Show added, changed, and kept."
+    },
+    {
+      "mode": "live",
+      "needs_yes": false,
+      "credit_ceiling": 0,
+      "params": {},
+      "id": "pick-line",
+      "local_function": "pick-reply-line",
+      "effect": "local",
+      "show": "Same comment id, same line. Empty list stops."
+    },
+    {
+      "mode": "dry_run",
+      "needs_yes": true,
+      "credit_ceiling": 0,
+      "params": {
+        "comment_id": "RESOLVE_AT_RUN_TIME",
+        "account_id": "RESOLVE_AT_RUN_TIME",
+        "text": "PICKED_LINE"
+      },
+      "id": "preview-reply",
+      "capability_id": "social.comments.reply",
+      "effect": "write",
+      "show": "Keep action_id and content_hash. Do not edit the text after this."
+    },
+    {
+      "mode": "dry_run",
+      "needs_yes": true,
+      "credit_ceiling": 0,
+      "params": {
+        "action_id": "FROM_PREVIEW",
+        "content_hash": "FROM_PREVIEW",
+        "approved": true
+      },
+      "id": "approve-reply",
+      "capability_id": "social.comments.approve",
+      "effect": "send",
+      "show": "Yes on that exact text. This posts the frozen reply."
+    },
+    {
+      "mode": "dry_run",
+      "needs_yes": true,
+      "credit_ceiling": 0,
+      "params": {
+        "table_id": "RESOLVE_AT_RUN_TIME",
+        "row_kind": "record"
+      },
+      "id": "log",
+      "capability_id": "tables.rows.upsert",
+      "effect": "write",
+      "show": "Status is previewed, approved, posted, or failed, with a reason."
+    },
+    {
+      "mode": "dry_run",
+      "needs_yes": true,
+      "credit_ceiling": 0,
+      "params": {
+        "conversation_id": "RESOLVE_AT_RUN_TIME",
+        "content": {
+          "body": "CHECKED_DM"
+        },
+        "client_request_id": "NEW_UUID_PER_SEND"
+      },
+      "id": "dm-existing-thread",
+      "capability_id": "unibox.context.thread_reply_send",
+      "effect": "send",
+      "show": "Only when a thread already exists. The asset text is the funnel skill, not this file."
+    }
+  ]
+}

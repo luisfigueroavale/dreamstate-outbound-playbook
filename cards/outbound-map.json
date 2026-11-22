@@ -1,0 +1,14 @@
+{
+  "id": "outbound-map",
+  "title": "Find, fill, judge, write, hand off, record",
+  "subtitle": "Six steps. One seat each. A yes before anything leaves.",
+  "boxes": [
+    {"n": 1, "name": "Find", "lines": ["Lead Sourcer", "Free preview, then a quoted search", "tables.sourcing.preview"]},
+    {"n": 2, "name": "Fill", "lines": ["Lead Sourcer", "Stop at the first verified email", "provider.enrich.email"]},
+    {"n": 3, "name": "Judge", "lines": ["Outbound Lead", "Score 0 to 100, quote one row", "column.ai_fit_score, 0.04 a row"]},
+    {"n": 4, "name": "Write", "lines": ["Outbound Copywriter", "One note from a fact you can point at", "No invented customer"]},
+    {"n": 5, "name": "Hand off", "lines": ["Sequences and Deliverability", "A draft sequence is free", "Enrollment waits for a yes"]},
+    {"n": 6, "name": "Record", "lines": ["Reply Manager", "Sync returns queued, not done", "Read integrations.health_get"]}
+  ],
+  "footer": "Run it with pick-a-play. Nothing has been sent."
+}

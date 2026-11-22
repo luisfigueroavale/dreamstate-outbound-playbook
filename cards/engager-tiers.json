@@ -1,0 +1,14 @@
+{
+  "id": "engager-tiers",
+  "title": "People who show up more than once",
+  "subtitle": "Fit plus repeat engagement. Unknown fit is held.",
+  "boxes": [
+    {"n": 1, "name": "Collect", "lines": ["Your own posts, 0 credits", "visibility.linkedin.engagement_harvest", "Harvest is a write. Yes first."]},
+    {"n": 2, "name": "Roll up", "lines": ["One touch per person, post, kind", "Team ids are left out", "A comment beats a reaction"]},
+    {"n": 3, "name": "Score", "lines": ["column.ai_fit_score", "0.04 a row", "Quote one row, then a ceiling"]},
+    {"n": 4, "name": "Tier 1", "lines": ["Fit at 75 plus a comment or repeat", "Your own note", "Cap 10 a week"]},
+    {"n": 5, "name": "Tier 2", "lines": ["Fit at 55", "A draft LinkedIn sequence", "Enrollment is a later yes"]},
+    {"n": 6, "name": "Hold", "lines": ["Unknown fit stays held", "Stale touches drop a tier", "Do not invent a score"]}
+  ],
+  "footer": "Run it with roll-up-post-engagers, then tier-warm-people."
+}

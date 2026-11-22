@@ -1,0 +1,56 @@
+{
+  "fictional": "Fictional example. No real companies or people.",
+  "domains": [
+    {
+      "domain": "mail.ledgerlight.example",
+      "provider_managed": false,
+      "spf": "observed",
+      "dkim": "observed",
+      "dmarc": "observed"
+    },
+    {
+      "domain": "send.ledgerlight.example",
+      "provider_managed": false,
+      "spf": "observed",
+      "dkim": "observed",
+      "dmarc": "missing"
+    },
+    {
+      "domain": "mailbox.example",
+      "provider_managed": true,
+      "spf": "missing",
+      "dkim": "missing",
+      "dmarc": "missing"
+    }
+  ],
+  "mailboxes": [
+    {
+      "id": "mb-steady",
+      "domain": "mail.ledgerlight.example",
+      "bounce_7d": 0.01,
+      "warmup_days": 20,
+      "daily_cap": 30
+    },
+    {
+      "id": "mb-bounce",
+      "domain": "mail.ledgerlight.example",
+      "bounce_7d": 0.08,
+      "warmup_days": 21,
+      "daily_cap": 30
+    },
+    {
+      "id": "mb-young",
+      "domain": "send.ledgerlight.example",
+      "bounce_7d": 0,
+      "warmup_days": 3,
+      "daily_cap": 20
+    },
+    {
+      "id": "mb-hosted",
+      "domain": "mailbox.example",
+      "bounce_7d": 0.01,
+      "warmup_days": 20,
+      "daily_cap": 25
+    }
+  ]
+}

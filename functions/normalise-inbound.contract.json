@@ -1,0 +1,15 @@
+{
+  "name": "normalise-inbound",
+  "input": {
+    "type": "object",
+    "required": [],
+    "note": "See the function file. Time comes in as as_of. No clock and no randomness."
+  },
+  "output": {
+    "type": "object",
+    "required": [
+      "reason"
+    ],
+    "note": "A plain reason on every hold or rejection."
+  }
+}

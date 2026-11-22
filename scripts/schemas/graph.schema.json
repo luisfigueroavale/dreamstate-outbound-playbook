@@ -1,0 +1,24 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["kind", "status", "name", "summary", "document"],
+  "properties": {
+    "kind": { "const": "workflow" },
+    "status": { "const": "disabled" },
+    "name": { "type": "string" },
+    "summary": { "type": "string" },
+    "import_with": { "type": "string" },
+    "preflight_with": { "type": "string" },
+    "lint_with": { "type": "string" },
+    "document": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["description", "nodes", "edges"],
+      "properties": {
+        "description": { "type": "string" },
+        "nodes": { "type": "array" },
+        "edges": { "type": "array" }
+      }
+    }
+  }
+}

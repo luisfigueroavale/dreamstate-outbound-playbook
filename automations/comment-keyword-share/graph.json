@@ -1,0 +1,211 @@
+{
+  "kind": "workflow",
+  "status": "disabled",
+  "name": "comment-keyword-share",
+  "summary": "Merge one keyword rule without dropping the others, then preview each reply.",
+  "import_with": "workflow.automations.import",
+  "preflight_with": "workflow.automations.import_preflight",
+  "lint_with": "workflow.automations.lint",
+  "document": {
+    "description": "Manual trigger. The asset text comes from the funnel skill send-lead-magnet. This graph does not write that text.",
+    "nodes": [
+      {
+        "id": "trigger",
+        "type": "trigger",
+        "position": {
+          "x": 0,
+          "y": 0
+        },
+        "data": {
+          "kind": "trigger",
+          "subtype": "manual_run",
+          "label": "Run by hand",
+          "config": {
+            "target": "none"
+          }
+        }
+      },
+      {
+        "id": "merge-keyword-rule",
+        "type": "action",
+        "position": {
+          "x": 0,
+          "y": 160
+        },
+        "data": {
+          "kind": "action",
+          "subtype": "code",
+          "label": "merge-keyword-rule",
+          "config": {
+            "source": "function cleanKeyword(value) {\n  return String(value ?? \"\").trim().toLowerCase();\n}\n\nfunction sameWords(left, right) {\n  if (left.length !== right.length) return false;\n  return left.every((word, index) => word === right[index]);\n}\n\nfunction mergeKeywordRule(input = {}) {\n  const revision = input.revision ?? null;\n  const current = (input.rules ?? []).map((rule) => ({\n    id: String(rule.id),\n    keywords: (rule.keywords ?? []).map(cleanKeyword).filter(Boolean),\n  }));\n  const incomingWords = (input.rule?.keywords ?? []).map(cleanKeyword).filter(Boolean);\n  if (incomingWords.length === 0) {\n    return { ok: false, reason: \"the rule has no keyword\", expected_revision: revision, rules: current, diff: { added: [], changed: [], kept: current.map((rule) => rule.id) } };\n  }\n  const incomingId = input.rule?.id ? String(input.rule.id) : `rule:${[...incomingWords].sort().join(\"+\")}`;\n  const others = current.filter((rule) => rule.id !== incomingId);\n  const clash = others.find((rule) => rule.keywords.some((word) => incomingWords.includes(word)));\n  if (clash) {\n    return {\n      ok: false,\n      reason: `keyword already used by ${clash.id}`,\n      expected_revision: revision,\n      rules: current,\n      diff: { added: [], changed: [], kept: current.map((rule) => rule.id) },\n    };\n  }\n  const previous = current.find((rule) => rule.id === incomingId);\n  const nextRule = { id: incomingId, keywords: incomingWords };\n  const rules = [...others, nextRule].sort((a, b) => a.id.localeCompare(b.id));\n  const changed = previous && !sameWords(previous.keywords, incomingWords) ? [incomingId] : [];\n  const added = previous ? [] : [incomingId];\n  const kept = others.map((rule) => rule.id).sort((a, b) => a.localeCompare(b));\n  return {\n    ok: true,\n    reason: previous ? \"rule updated, other rules kept\" : \"rule added, other rules kept\",\n    expected_revision: revision,\n    rules,\n    diff: { added, changed, kept },\n  };\n}\n",
+            "output_schema": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "ok",
+                "reason",
+                "expected_revision",
+                "rules",
+                "diff"
+              ],
+              "properties": {
+                "ok": {
+                  "type": "boolean"
+                },
+                "reason": {
+                  "type": "string"
+                },
+                "expected_revision": {
+                  "anyOf": [
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "rules": {
+                  "type": "array"
+                },
+                "diff": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        "id": "approve-rules",
+        "type": "action",
+        "position": {
+          "x": 0,
+          "y": 320
+        },
+        "data": {
+          "kind": "action",
+          "subtype": "request_approval",
+          "label": "Approve the rule diff",
+          "config": {
+            "title": "Approve the rule diff",
+            "body": "Show added, changed, and kept. Replace sends the full set and expected_revision. A keyword clash stops.",
+            "assignee": "owner",
+            "outcomes": [
+              "approve",
+              "hold"
+            ],
+            "on_expiry": "hold"
+          }
+        }
+      },
+      {
+        "id": "pick-reply-line",
+        "type": "action",
+        "position": {
+          "x": 0,
+          "y": 480
+        },
+        "data": {
+          "kind": "action",
+          "subtype": "code",
+          "label": "pick-reply-line",
+          "config": {
+            "source": "// Pure SHA-256. No import, so a workflow code node can carry the same bytes.\n\nconst K = [\n  0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5, 0x3956c25b, 0x59f111f1, 0x923f82a4, 0xab1c5ed5,\n  0xd807aa98, 0x12835b01, 0x243185be, 0x550c7dc3, 0x72be5d74, 0x80deb1fe, 0x9bdc06a7, 0xc19bf174,\n  0xe49b69c1, 0xefbe4786, 0x0fc19dc6, 0x240ca1cc, 0x2de92c6f, 0x4a7484aa, 0x5cb0a9dc, 0x76f988da,\n  0x983e5152, 0xa831c66d, 0xb00327c8, 0xbf597fc7, 0xc6e00bf3, 0xd5a79147, 0x06ca6351, 0x14292967,\n  0x27b70a85, 0x2e1b2138, 0x4d2c6dfc, 0x53380d13, 0x650a7354, 0x766a0abb, 0x81c2c92e, 0x92722c85,\n  0xa2bfe8a1, 0xa81a664b, 0xc24b8b70, 0xc76c51a3, 0xd192e819, 0xd6990624, 0xf40e3585, 0x106aa070,\n  0x19a4c116, 0x1e376c08, 0x2748774c, 0x34b0bcb5, 0x391c0cb3, 0x4ed8aa4a, 0x5b9cca4f, 0x682e6ff3,\n  0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208, 0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2,\n];\n\nfunction rotr(n, x) {\n  return (x >>> n) | (x << (32 - n));\n}\n\nfunction sha256Hex(message) {\n  const bytes = new TextEncoder().encode(String(message));\n  const bitLen = bytes.length * 8;\n  const withOne = new Uint8Array(((bytes.length + 9 + 63) >> 6) << 6);\n  withOne.set(bytes);\n  withOne[bytes.length] = 0x80;\n  const view = new DataView(withOne.buffer);\n  view.setUint32(withOne.length - 4, bitLen >>> 0, false);\n  view.setUint32(withOne.length - 8, Math.floor(bitLen / 0x100000000), false);\n\n  let h0 = 0x6a09e667;\n  let h1 = 0xbb67ae85;\n  let h2 = 0x3c6ef372;\n  let h3 = 0xa54ff53a;\n  let h4 = 0x510e527f;\n  let h5 = 0x9b05688c;\n  let h6 = 0x1f83d9ab;\n  let h7 = 0x5be0cd19;\n  const w = new Uint32Array(64);\n\n  for (let offset = 0; offset < withOne.length; offset += 64) {\n    for (let i = 0; i < 16; i += 1) w[i] = view.getUint32(offset + i * 4, false);\n    for (let i = 16; i < 64; i += 1) {\n      const s0 = rotr(7, w[i - 15]) ^ rotr(18, w[i - 15]) ^ (w[i - 15] >>> 3);\n      const s1 = rotr(17, w[i - 2]) ^ rotr(19, w[i - 2]) ^ (w[i - 2] >>> 10);\n      w[i] = (w[i - 16] + s0 + w[i - 7] + s1) >>> 0;\n    }\n    let a = h0;\n    let b = h1;\n    let c = h2;\n    let d = h3;\n    let e = h4;\n    let f = h5;\n    let g = h6;\n    let h = h7;\n    for (let i = 0; i < 64; i += 1) {\n      const S1 = rotr(6, e) ^ rotr(11, e) ^ rotr(25, e);\n      const ch = (e & f) ^ (~e & g);\n      const temp1 = (h + S1 + ch + K[i] + w[i]) >>> 0;\n      const S0 = rotr(2, a) ^ rotr(13, a) ^ rotr(22, a);\n      const maj = (a & b) ^ (a & c) ^ (b & c);\n      const temp2 = (S0 + maj) >>> 0;\n      h = g;\n      g = f;\n      f = e;\n      e = (d + temp1) >>> 0;\n      d = c;\n      c = b;\n      b = a;\n      a = (temp1 + temp2) >>> 0;\n    }\n    h0 = (h0 + a) >>> 0;\n    h1 = (h1 + b) >>> 0;\n    h2 = (h2 + c) >>> 0;\n    h3 = (h3 + d) >>> 0;\n    h4 = (h4 + e) >>> 0;\n    h5 = (h5 + f) >>> 0;\n    h6 = (h6 + g) >>> 0;\n    h7 = (h7 + h) >>> 0;\n  }\n\n  return [h0, h1, h2, h3, h4, h5, h6, h7].map((n) => n.toString(16).padStart(8, \"0\")).join(\"\");\n}\n\nfunction pickReplyLine(input = {}) {\n  const lines = (input.lines ?? []).map((line) => String(line).trim()).filter(Boolean);\n  if (lines.length === 0) {\n    return { ok: false, reason: \"no reply lines\", line: null, index: null };\n  }\n  const commentId = String(input.comment_id ?? \"\");\n  if (!commentId) {\n    return { ok: false, reason: \"missing comment id\", line: null, index: null };\n  }\n  const index = Number.parseInt(sha256Hex(commentId).slice(0, 8), 16) % lines.length;\n  return { ok: true, reason: null, line: lines[index], index };\n}\n",
+            "output_schema": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "ok",
+                "reason",
+                "line",
+                "index"
+              ],
+              "properties": {
+                "ok": {
+                  "type": "boolean"
+                },
+                "reason": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "line": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "index": {
+                  "anyOf": [
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      {
+        "id": "approve-reply",
+        "type": "action",
+        "position": {
+          "x": 0,
+          "y": 640
+        },
+        "data": {
+          "kind": "action",
+          "subtype": "request_approval",
+          "label": "Approve this exact reply",
+          "config": {
+            "title": "Approve this exact reply",
+            "body": "Show the frozen line. Approve posts that text. Any DM is a separate yes.",
+            "assignee": "owner",
+            "outcomes": [
+              "approve",
+              "hold"
+            ],
+            "on_expiry": "hold"
+          }
+        }
+      }
+    ],
+    "edges": [
+      {
+        "id": "trigger-to-merge-keyword-rule",
+        "source": "trigger",
+        "target": "merge-keyword-rule"
+      },
+      {
+        "id": "merge-keyword-rule-to-approve-rules",
+        "source": "merge-keyword-rule",
+        "target": "approve-rules"
+      },
+      {
+        "id": "approve-rules-to-pick-reply-line-approve",
+        "source": "approve-rules",
+        "target": "pick-reply-line",
+        "sourceHandle": "approve"
+      },
+      {
+        "id": "pick-reply-line-to-approve-reply",
+        "source": "pick-reply-line",
+        "target": "approve-reply"
+      }
+    ]
+  }
+}
