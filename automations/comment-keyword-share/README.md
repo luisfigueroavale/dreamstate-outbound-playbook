@@ -1,6 +1,6 @@
 # Comment keyword share
 
-Read the rules already on a post, merge one rule, and preview a reply. pick-reply-line is a call-plan step, not a graph node, because the graph has no reply list. The log upsert uses external_key from the comment id. The asset text is not written here.
+Read the rules already on a post, merge one rule, and preview a reply. The reply line is picked by a stable hash from the reviewed list, in the call plan, because the graph has no reply list. The log upsert uses external_key from the comment id. The asset text is not written here.
 
 ## When
 

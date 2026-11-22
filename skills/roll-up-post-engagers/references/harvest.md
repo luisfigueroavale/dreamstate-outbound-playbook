@@ -6,7 +6,7 @@ worksheet_id, linkedin_account_id, and post_id. All three are required and resol
 
 ## Call
 
-visibility.linkedin.engagement_harvest is 0 credits and a write. dry_run first, quote, wait for the owner's yes on that item. Then read visibility.linkedin.engagement_status until done. Read people with visibility.linkedin.engagement_engagers. On timeout, runs_get on the same key. Do not harvest a second time. runs_get is an MCP read named in the plan and was not confirmed with tools_get on this build. If tools_get says not found, stop and say so.
+visibility.linkedin.engagement_harvest is 0 credits and a write. dry_run first, quote, wait for the owner's yes on that item. Then read visibility.linkedin.engagement_status until done. Read people with visibility.linkedin.engagement_engagers. On timeout, call the MCP tool runs_get with that run_id. wait_seconds is optional and at most 20. It is a free read. It is not a capability id: tools_get on the name runs_get returns not found, and the nearest capability is runs.get. Use the MCP tool. Do not harvest a second time.
 
 ## Show the owner
 

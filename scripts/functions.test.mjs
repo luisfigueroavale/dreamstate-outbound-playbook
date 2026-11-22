@@ -25,6 +25,7 @@ test("sha256 matches node crypto", () => {
 test("normalise rejects missing and malformed, marks personal, and keys the email", () => {
   assert.equal(normaliseInbound({ email: "  ", form_id: FORM_ID }).reason, "missing email");
   assert.equal(normaliseInbound({ email: "not-an-email", form_id: FORM_ID }).reason, "malformed email");
+  assert.equal(normaliseInbound({ email: "ada@acme.12", form_id: FORM_ID }).reason, "malformed email");
   const personal = normaliseInbound({ email: "Dana@gmail.com", form_id: FORM_ID });
   assert.equal(personal.mailbox_class, "personal");
   assert.equal(personal.email, "dana@gmail.com");
@@ -114,7 +115,10 @@ test("keyword merge keeps other rules and rejects a clash", () => {
   assert.equal(added.rules.find((rule) => !rule.id).dm_message, "new note");
   const clash = mergeKeywordRule({ ...current, rule: { keywords: ["CLOSE"] } });
   assert.equal(clash.ok, false);
+  assert.equal(clash.rules.length, 2);
   assert.equal(clash.rules[0].dm_message, "kept");
+  assert.equal(mergeKeywordRule({ expected_revision: 2, rules: current.rules, rule: { keywords: "books" } }).ok, false);
+  assert.equal(mergeKeywordRule({ expected_revision: "4", rules: current.rules, rule: { keywords: ["books"] } }).expected_revision, null);
 });
 
 test("reply pick is stable and an empty list stops", () => {

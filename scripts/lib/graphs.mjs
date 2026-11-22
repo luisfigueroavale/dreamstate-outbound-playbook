@@ -2,7 +2,7 @@ import { inlineFunction, nullable, objectSchema } from "./inline.mjs";
 
 function codeNode(id, y, file, fnName, schema) {
   const body = inlineFunction(new URL(`../../functions/${file}.mjs`, import.meta.url));
-  const source = `${body}\nresult = ${fnName}(typeof payload === "undefined" ? {} : payload);\n`;
+  const source = `${body}\nresult = ${fnName}(payload == null ? {} : payload);\n`;
   return {
     id,
     type: "action",

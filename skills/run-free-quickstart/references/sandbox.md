@@ -6,7 +6,7 @@ name: Sandbox: quickstart. table_id comes back from tables.workbooks.create. Two
 
 ## Call
 
-tables.workbooks.create is 0 credits and a write. tables.rows.create_many is 0 credits and a write. dry_run first, quote, wait for the owner's yes on that item, for each write. Then live with an idempotency_key. Query is a free read and waits until both writes have a yes.
+tables.workbooks.create is 0 credits and a write. dry_run first, quote, wait for the owner's yes on that item. Then live with an idempotency_key. The live call returns table_id. tables.rows.create_many is 0 credits and a write and needs that table_id, so its dry_run comes after the create is live. Quote it, wait for its own yes, then live with an idempotency_key. Query is a free read and waits until both writes have a yes.
 
 ## Show the owner
 

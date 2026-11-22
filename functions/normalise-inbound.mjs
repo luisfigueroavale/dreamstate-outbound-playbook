@@ -26,7 +26,9 @@ function looksLikeEmail(value) {
   const dot = host.lastIndexOf(".");
   if (dot < 1 || host.length - dot < 3) return false;
   if (local.includes("..") || host.includes("..") || host.startsWith(".") || host.endsWith(".")) return false;
-  return /^[a-z0-9][a-z0-9._%+-]*$/.test(local) && /^[a-z0-9][a-z0-9.-]*$/.test(host);
+  const localOk = /^[a-z0-9][a-z0-9._%+-]*$/.test(local);
+  const hostOk = /^[a-z0-9][a-z0-9.-]*\.[a-z]{2,}$/.test(host);
+  return localOk && hostOk;
 }
 
 export function normaliseInbound(input = {}) {

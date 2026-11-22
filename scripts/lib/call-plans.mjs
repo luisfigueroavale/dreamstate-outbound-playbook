@@ -101,8 +101,8 @@ export function buildCallPlans() {
           id: "list-own-posts",
           capability_id: "social.content.artifact_list",
           effect: "read",
-          params: { status: "published", provider: "linkedin", limit: 25 },
-          show: "Free read of the workspace post inventory. Resolve each platform post id from the artifact at run time. Default 10, cap 25.",
+          params: { status: "published", provider: "linkedin", limit: 25, include_deliveries: true },
+          show: "Free read. The list has no account filter. Keep an artifact only when a delivery belongs to the selected sender. If none does, stop.",
         }),
         step({
           id: "harvest",
@@ -132,8 +132,8 @@ export function buildCallPlans() {
           mode: "dry_run",
           effect: "write",
           needs_yes: true,
-          params: { table_id: "WARM_TOUCHES", row_kind: "record", external_key: "TOUCH_KEY" },
-          show: "One row per touch key. Pass that key as external_key and the same idempotency_key on the live call.",
+          params: { table_id: "RESOLVE_AT_RUN_TIME", row_kind: "record", external_key: "TOUCH_KEY" },
+          show: "Warm touches. The worksheet id is resolved at run time. Pass the touch key as external_key and the same idempotency_key on the live call.",
         }),
         step({
           id: "upsert-people",
@@ -141,8 +141,8 @@ export function buildCallPlans() {
           mode: "dry_run",
           effect: "write",
           needs_yes: true,
-          params: { table_id: "WARM_PEOPLE", row_kind: "person", subject_id: "PERSON_ID" },
-          show: "One row per person. Pass the person id as subject_id.",
+          params: { table_id: "RESOLVE_AT_RUN_TIME", row_kind: "person", subject_id: "PERSON_ID" },
+          show: "Warm people. The worksheet id is resolved at run time. Pass the person id as subject_id.",
         }),
         step({
           id: "add-fit",

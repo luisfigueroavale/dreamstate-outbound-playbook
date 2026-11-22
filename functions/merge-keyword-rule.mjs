@@ -6,7 +6,9 @@ function cleanKeyword(value) {
 }
 
 function keywordsOf(rule) {
-  return (rule.keywords ?? []).map(cleanKeyword).filter(Boolean);
+  const raw = rule?.keywords;
+  if (!Array.isArray(raw)) return [];
+  return raw.map(cleanKeyword).filter(Boolean);
 }
 
 function byCodePoint(left, right) {
@@ -19,10 +21,11 @@ function copyRule(rule) {
 }
 
 function stopped(reason, rules, revision) {
+  const shown = Number.isInteger(revision) && revision > 0 ? revision : null;
   return {
     ok: false,
     reason,
-    expected_revision: revision ?? null,
+    expected_revision: shown,
     rules,
     diff: { added: [], changed: [], kept: rules.map((rule) => rule.id).filter(Boolean).sort(byCodePoint) },
   };
@@ -68,7 +71,7 @@ export function mergeKeywordRule(input = {}) {
     nextRule = copyRule(incoming);
     delete nextRule.id;
     nextRule.keywords = incomingWords;
-    added = ["new"];
+    added = [incomingWords.join(", ")];
   }
   const rules = [...others, nextRule].sort((left, right) => byCodePoint(String(left.id ?? ""), String(right.id ?? "")));
   const kept = others.map((rule) => String(rule.id)).sort(byCodePoint);

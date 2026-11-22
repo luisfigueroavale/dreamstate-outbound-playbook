@@ -22,20 +22,29 @@ const repoRoot = fileURLToPath(new URL("..", import.meta.url));
 
 function copyTree() {
   const dir = mkdtempSync(path.join(tmpdir(), "playbook-"));
-  const skipTop = new Set([".git", "node_modules", "output", "work"]);
+  const skipTop = new Set([".git", "node_modules", "output", "work", "data", "settings.local", "brand.local", "audience.local"]);
   cpSync(repoRoot, dir, {
     recursive: true,
     filter(entryPath) {
       const rel = path.relative(repoRoot, entryPath);
       if (!rel || rel === ".") return true;
       const top = rel.split(path.sep)[0];
-      if (skipTop.has(top)) return false;
+      if (skipTop.has(top) || top.startsWith(".env") || top.endsWith(".key")) return false;
       if (rel === ".banned-terms.local") return false;
       return true;
     },
   });
   writeFileSync(path.join(dir, ".banned-terms.local"), "zzplaceholder\n");
   return dir;
+}
+
+function withCopy(run) {
+  const dir = copyTree();
+  try {
+    run(dir);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
 }
 
 function ids(plan) {
@@ -82,8 +91,7 @@ test("kept keyword rules stay byte-identical, including dm_message", () => {
   assert.equal(merged.ok, true);
   const returned = merged.rules.find((rule) => rule.id === kept.id);
   assert.equal(JSON.stringify(returned), JSON.stringify(kept));
-  assert.equal(merged.rules.some((rule) => rule.id), true);
-  assert.equal(merged.rules.some((rule) => !rule.id), true);
+  assert.equal(merged.rules.find((rule) => !rule.id).dm_message, "new share");
 });
 
 test("editing an existing keyword rule is reported as changed", () => {
@@ -206,63 +214,63 @@ test("graph code nodes call the function and map a payload", () => {
 });
 
 test("strict check fails when the banned file is missing", () => {
-  const dir = copyTree();
-  rmSync(path.join(dir, ".banned-terms.local"));
-  const result = runChecks(dir, { strict: true });
-  assert.equal(result.ok, false);
-  assert.ok(result.errors.some((message) => message.includes("--strict")));
-  rmSync(dir, { recursive: true, force: true });
+  withCopy((dir) => {
+    rmSync(path.join(dir, ".banned-terms.local"));
+    const result = runChecks(dir, { strict: true });
+    assert.equal(result.ok, false);
+    assert.ok(result.errors.some((message) => message.includes("--strict")));
+  });
 });
 
 test("check rejects a banned term and a dash in a temp copy", () => {
-  const banned = copyTree();
-  writeFileSync(path.join(banned, ".banned-terms.local"), "zzmarker\n");
-  writeFileSync(path.join(banned, "docs/scratch.md"), "A zzmarker slipped in.\n");
-  const bannedResult = runChecks(banned, { strict: true });
-  assert.ok(bannedResult.errors.some((message) => message.includes("banned term")));
-  rmSync(banned, { recursive: true, force: true });
+  withCopy((banned) => {
+    writeFileSync(path.join(banned, ".banned-terms.local"), "zzmarker\n");
+    writeFileSync(path.join(banned, "docs/scratch.md"), "A zzmarker slipped in.\n");
+    const bannedResult = runChecks(banned, { strict: true });
+    assert.ok(bannedResult.errors.some((message) => message.includes("banned term")));
+  });
 
-  const dashed = copyTree();
-  writeFileSync(path.join(dashed, "docs/scratch.md"), "A line " + String.fromCharCode(0x2014) + " here\n");
-  const dashResult = runChecks(dashed, { strict: false });
-  assert.ok(dashResult.errors.some((message) => message.includes("dash")));
-  rmSync(dashed, { recursive: true, force: true });
+  withCopy((dashed) => {
+    writeFileSync(path.join(dashed, "docs/scratch.md"), "A line " + String.fromCharCode(0x2014) + " here\n");
+    const dashResult = runChecks(dashed, { strict: false });
+    assert.ok(dashResult.errors.some((message) => message.includes("dash")));
+  });
 });
 
 test("check rejects a write without a yes, an enabled graph, a profile id, a vendor id, and drift", () => {
-  const writer = copyTree();
-  const planPath = path.join(writer, "automations/form-to-crm/call-plan.json");
-  const plan = JSON.parse(readFileSync(planPath, "utf8"));
-  plan.steps.find((item) => item.effect === "write").needs_yes = false;
-  writeFileSync(planPath, JSON.stringify(plan, null, 2) + "\n");
-  assert.ok(runChecks(writer, { strict: false }).errors.some((message) => message.includes("needs a yes")));
-  rmSync(writer, { recursive: true, force: true });
+  withCopy((writer) => {
+    const planPath = path.join(writer, "automations/form-to-crm/call-plan.json");
+    const plan = JSON.parse(readFileSync(planPath, "utf8"));
+    plan.steps.find((item) => item.effect === "write").needs_yes = false;
+    writeFileSync(planPath, JSON.stringify(plan, null, 2) + "\n");
+    assert.ok(runChecks(writer, { strict: false }).errors.some((message) => message.includes("needs a yes")));
+  });
 
-  const enabled = copyTree();
-  const graphPath = path.join(enabled, "automations/form-to-crm/graph.json");
-  const graph = JSON.parse(readFileSync(graphPath, "utf8"));
-  graph.status = "enabled";
-  writeFileSync(graphPath, JSON.stringify(graph, null, 2) + "\n");
-  assert.ok(runChecks(enabled, { strict: false }).errors.some((message) => message.includes("not disabled")));
-  rmSync(enabled, { recursive: true, force: true });
+  withCopy((enabled) => {
+    const graphPath = path.join(enabled, "automations/form-to-crm/graph.json");
+    const graph = JSON.parse(readFileSync(graphPath, "utf8"));
+    graph.status = "enabled";
+    writeFileSync(graphPath, JSON.stringify(graph, null, 2) + "\n");
+    assert.ok(runChecks(enabled, { strict: false }).errors.some((message) => message.includes("not disabled")));
+  });
 
-  const profile = copyTree();
-  const marker = ["linkedin.com", "in", "someone"].join("/");
-  writeFileSync(path.join(profile, "docs/scratch.md"), marker + "\n");
-  assert.ok(runChecks(profile, { strict: false }).errors.some((message) => message.includes("LinkedIn")));
-  rmSync(profile, { recursive: true, force: true });
+  withCopy((profile) => {
+    const marker = ["linkedin.com", "in", "someone"].join("/");
+    writeFileSync(path.join(profile, "docs/scratch.md"), marker + "\n");
+    assert.ok(runChecks(profile, { strict: false }).errors.some((message) => message.includes("LinkedIn")));
+  });
 
-  const vendor = copyTree();
-  const vendorId = loadWordList(path.join(vendor, "scripts/vendor-ids.json"))[0];
-  writeFileSync(path.join(vendor, "docs/scratch.md"), `See ${vendorId} in a file.\n`);
-  assert.ok(runChecks(vendor, { strict: false }).errors.some((message) => message.includes("vendor")));
-  rmSync(vendor, { recursive: true, force: true });
+  withCopy((vendor) => {
+    const vendorId = loadWordList(path.join(vendor, "scripts/vendor-ids.json"))[0];
+    writeFileSync(path.join(vendor, "docs/scratch.md"), `See ${vendorId} in a file.\n`);
+    assert.ok(runChecks(vendor, { strict: false }).errors.some((message) => message.includes("vendor")));
+  });
 
-  const drift = copyTree();
-  const driftedPath = path.join(drift, "automations/form-to-crm/graph.json");
-  const drifted = JSON.parse(readFileSync(driftedPath, "utf8"));
-  drifted.summary = drifted.summary + " extra";
-  writeFileSync(driftedPath, JSON.stringify(drifted, null, 2) + "\n");
-  assert.ok(runChecks(drift, { strict: false }).errors.some((message) => message.includes("does not match the generator")));
-  rmSync(drift, { recursive: true, force: true });
+  withCopy((drift) => {
+    const driftedPath = path.join(drift, "automations/form-to-crm/graph.json");
+    const drifted = JSON.parse(readFileSync(driftedPath, "utf8"));
+    drifted.summary = drifted.summary + " extra";
+    writeFileSync(driftedPath, JSON.stringify(drifted, null, 2) + "\n");
+    assert.ok(runChecks(drift, { strict: false }).errors.some((message) => message.includes("does not match the generator")));
+  });
 });

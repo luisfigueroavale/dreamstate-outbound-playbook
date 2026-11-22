@@ -19,12 +19,13 @@
       "params": {
         "status": "published",
         "provider": "linkedin",
-        "limit": 25
+        "limit": 25,
+        "include_deliveries": true
       },
       "id": "list-own-posts",
       "capability_id": "social.content.artifact_list",
       "effect": "read",
-      "show": "Free read of the workspace post inventory. Resolve each platform post id from the artifact at run time. Default 10, cap 25."
+      "show": "Free read. The list has no account filter. Keep an artifact only when a delivery belongs to the selected sender. If none does, stop."
     },
     {
       "mode": "dry_run",
@@ -77,28 +78,28 @@
       "needs_yes": true,
       "credit_ceiling": 0,
       "params": {
-        "table_id": "WARM_TOUCHES",
+        "table_id": "RESOLVE_AT_RUN_TIME",
         "row_kind": "record",
         "external_key": "TOUCH_KEY"
       },
       "id": "upsert-touches",
       "capability_id": "tables.rows.upsert",
       "effect": "write",
-      "show": "One row per touch key. Pass that key as external_key and the same idempotency_key on the live call."
+      "show": "Warm touches. The worksheet id is resolved at run time. Pass the touch key as external_key and the same idempotency_key on the live call."
     },
     {
       "mode": "dry_run",
       "needs_yes": true,
       "credit_ceiling": 0,
       "params": {
-        "table_id": "WARM_PEOPLE",
+        "table_id": "RESOLVE_AT_RUN_TIME",
         "row_kind": "person",
         "subject_id": "PERSON_ID"
       },
       "id": "upsert-people",
       "capability_id": "tables.rows.upsert",
       "effect": "write",
-      "show": "One row per person. Pass the person id as subject_id."
+      "show": "Warm people. The worksheet id is resolved at run time. Pass the person id as subject_id."
     },
     {
       "mode": "dry_run",

@@ -13,7 +13,7 @@ A form should land in the CRM. The Dreamstate skill for records is `dreamstate-c
 
 ## Steps
 
-1. Attach `source.webhook_source` with require_secret true (`references/webhook.md`).
+1. Read the webhook card, then attach `source.webhook_source` with require_secret true (`references/webhook.md`).
 2. Normalise the email and hold bad rows (`references/normalise.md`).
 3. Search the CRM and classify the match (`references/class.md`).
 4. List record object types, then assert a record when next is assert_record (`references/assert.md`).
