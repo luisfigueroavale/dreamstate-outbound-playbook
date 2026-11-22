@@ -18,7 +18,7 @@ It will not send, post, enroll, sync to a CRM, switch on a workflow or a rule, s
 
 1. `npx @trydreamstate/cli install`, then sign in in the browser.
 2. Run `npm run demo`, then read the markdown it writes at `output/demo/report.md`. The file walks one made-up week and states why each row was held.
-3. Open the folder in Codex or Claude Code and run `run-free-quickstart`. It calls `whoami`, confirms the workspace, makes only free reads, and shows 0 credits spent.
+3. Open the folder in Codex or Claude Code and run `run-free-quickstart`. It calls `whoami`, confirms the workspace, and makes only free reads. The spend figure is the workspace total since one hour ago, so show that number. This check itself adds no paid call.
 4. Copy `settings/` to `settings.local/` and fill `team.json` and `tiers.json` with the agent.
 5. Run `check-email-stack` (free reads) and read the pass or hold per domain and mailbox.
 6. Pick one play with `pick-a-play`. Run `npm run plan-install` and read its calls. Nothing has run.

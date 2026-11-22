@@ -145,7 +145,8 @@ test("email stack holds the missing DMARC, the high bounce, and the young mailbo
   assert.equal(sample.stack.domains.find((row) => row.domain === "mailbox.example").status, "skipped");
   assert.equal(sample.stack.mailboxes.find((row) => row.mailbox_id === "mb-bounce").status, "hold");
   assert.equal(sample.stack.mailboxes.find((row) => row.mailbox_id === "mb-young").status, "hold");
-  assert.equal(sample.stack.mailboxes.find((row) => row.mailbox_id === "mb-steady").status, "pass");
+  assert.equal(sample.stack.mailboxes.find((row) => row.mailbox_id === "mb-steady").status, "hold");
+  assert.match(sample.stack.mailboxes.find((row) => row.mailbox_id === "mb-steady").holds.map((hold) => hold.reason).join(" "), /to-check/);
   const unknown = gradeEmailStack({
     rules: stackRules,
     domains: [],
@@ -160,6 +161,8 @@ test("quickstart passes the right workspace and stops the wrong one", () => {
   assert.equal(checkQuickstart({ workspace_id: WORKSPACE_ID, expected_workspace_id: WORKSPACE_ID, contracts_returned: true, spend_credits: 1, writes: 0 }).ok, false);
   assert.equal(checkQuickstart({ workspace_id: WORKSPACE_ID, expected_workspace_id: WORKSPACE_ID, contracts_returned: true, spend_credits: 0, writes: 1, sandbox_approved: false }).ok, false);
   assert.equal(checkQuickstart({ workspace_id: WORKSPACE_ID, expected_workspace_id: WORKSPACE_ID, contracts_returned: true, spend_credits: 0, writes: 1, sandbox_approved: true }).ok, true);
+  assert.equal(checkQuickstart({ contracts_returned: true, spend_credits: 0, writes: 0 }).ok, false);
+  assert.equal(classifyCrmMatch({ email: "", records: [] }).class, "failed");
 });
 
 test("sample week forms and replies", () => {

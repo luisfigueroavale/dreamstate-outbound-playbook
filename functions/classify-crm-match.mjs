@@ -18,6 +18,14 @@ export function classifyCrmMatch(input = {}) {
     });
   }
   const email = String(input.email ?? "").trim().toLowerCase();
+  if (!email) {
+    return result({
+      class: "failed",
+      reason: "missing email",
+      record_id: null,
+      next: "hold",
+    });
+  }
   const records = Array.isArray(input.records) ? input.records : [];
   const exact = records.filter((record) => String(record.email ?? "").trim().toLowerCase() === email && email);
   if (exact.length === 1) {

@@ -77,13 +77,28 @@
       "needs_yes": true,
       "credit_ceiling": 0,
       "params": {
-        "table_id": "RESOLVE_AT_RUN_TIME",
-        "row_kind": "person"
+        "table_id": "WARM_TOUCHES",
+        "row_kind": "record",
+        "external_key": "TOUCH_KEY"
       },
-      "id": "upsert",
+      "id": "upsert-touches",
       "capability_id": "tables.rows.upsert",
       "effect": "write",
-      "show": "Write Warm touches and Warm people. Worksheet ids are resolved at run time."
+      "show": "One row per touch key. Pass that key as external_key and the same idempotency_key on the live call."
+    },
+    {
+      "mode": "dry_run",
+      "needs_yes": true,
+      "credit_ceiling": 0,
+      "params": {
+        "table_id": "WARM_PEOPLE",
+        "row_kind": "person",
+        "subject_id": "PERSON_ID"
+      },
+      "id": "upsert-people",
+      "capability_id": "tables.rows.upsert",
+      "effect": "write",
+      "show": "One row per person. Pass the person id as subject_id."
     },
     {
       "mode": "dry_run",

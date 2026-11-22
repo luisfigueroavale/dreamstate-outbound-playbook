@@ -22,7 +22,7 @@ schedule, or delete without a yes on that item.
 A paid or writing step says: dry_run first, quote, wait for the owner's
 yes on that item.
 
-Copy settings/ to settings.local/ and stop while a needed file is blank.
+Copy settings/ to settings.local/ only when that folder is absent. If it already exists, leave the owner's edits. Stop while a needed file is blank.
 Do not commit settings.local, brand.local, or .banned-terms.local.
 
 The 08:00 rollup may add one plays line from free reads: forms waiting

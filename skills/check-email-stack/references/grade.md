@@ -10,7 +10,7 @@ Local function grade-email-stack. A provider managed domain is skipped with a no
 
 ## Show the owner
 
-Pass or hold per domain and mailbox, with the reason. The to-check note on the daily cap figure.
+Pass or hold per domain and mailbox, with the reason. The to-check notes: the 0.02 bounce limit, the 14 day warmup minimum, and the missing daily cap figure. A mailbox holds while that figure is missing, even when a cap is already set.
 
 ## Failure cases
 

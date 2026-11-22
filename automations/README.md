@@ -1,6 +1,6 @@
 # Automations
 
-Three plays, each disabled. Import creates a disabled workflow. Enable is a separate yes. The call plan is the order of Dreamstate calls. The graph holds the local functions and the approval nodes. A code node does not call the network.
+Three plays, each disabled. Import creates a disabled workflow. Enable is a separate yes. The imported graph is the decision path: local functions and approval nodes. It does not run the Dreamstate calls. The agent runs the call plan in the same folder. A code node does not call the network.
 
 | Folder | Trigger in v1 | What waits for a yes |
 | --- | --- | --- |

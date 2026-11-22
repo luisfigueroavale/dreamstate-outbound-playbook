@@ -14,7 +14,7 @@ People who engage with your posts, ranked by fit and by showing up more than onc
 
 ## What needs a yes
 
-Harvest, the live score, each upsert, and any later enrollment.
+Harvest, each upsert, adding the fit column, the live score, the paid pull for posts that are not yours, the tier 2 draft, and any later enrollment.
 
 ## Run it with
 

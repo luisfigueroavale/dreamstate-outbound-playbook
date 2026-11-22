@@ -17,7 +17,11 @@ for (const [target, linkPath] of links) {
   if (current === `../${target}`) continue;
   try {
     const stat = lstatSync(linkPath);
-    if (stat.isSymbolicLink() || stat.isDirectory()) rmSync(linkPath, { recursive: true, force: true });
+    if (stat.isSymbolicLink()) rmSync(linkPath);
+    else {
+      console.log(`${linkPath} is a real directory. Leave it in place.`);
+      continue;
+    }
   } catch {
     // missing is fine
   }

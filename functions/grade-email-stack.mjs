@@ -41,7 +41,9 @@ function mailboxGrade(mailbox, rules) {
   }
   if (mailbox.daily_cap === null || mailbox.daily_cap === undefined) {
     holds.push({ reason: "no daily cap is set", seat: SEAT });
-  } else if (rules.daily_cap_max !== null && rules.daily_cap_max !== undefined && Number(mailbox.daily_cap) > rules.daily_cap_max) {
+  } else if (rules.daily_cap_max === null || rules.daily_cap_max === undefined) {
+    holds.push({ reason: "daily cap figure is to-check", seat: SEAT });
+  } else if (Number(mailbox.daily_cap) > rules.daily_cap_max) {
     holds.push({ reason: `daily cap ${mailbox.daily_cap} is over ${rules.daily_cap_max}`, seat: SEAT });
   }
   return {

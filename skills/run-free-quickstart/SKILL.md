@@ -32,6 +32,7 @@ You want proof the workspace is wired and that this check spent 0 credits. Not f
 | 5 | `workspace.usage.status_get` | live | no |
 | 5 | `workspace.usage.spend_breakdown` | live | no |
 | 6 | `tables.workbooks.create` | dry_run | yes |
+| 6 | `tables.rows.create_many` | dry_run | yes |
 | 6 | `tables.rows.query` | live | no |
 
 ## Stop

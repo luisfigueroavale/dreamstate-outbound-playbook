@@ -66,10 +66,10 @@ Clash rejected: keyword already used by 11111111-1111-4111-8111-111111111111.
 - mail.ledgerlight.example: pass.
 - send.ledgerlight.example: hold. DMARC is missing.
 - mailbox.example: skipped. provider managed domain, DNS is not ours to fix.
-- mb-steady: pass.
-- mb-bounce: hold. 7 day bounce 0.08 is over 0.02 (Sequences & Deliverability).
-- mb-young: hold. warmup is 3 days and the minimum is 14 (Sequences & Deliverability).
-- mb-hosted: pass.
+- mb-steady: hold. daily cap figure is to-check (Sequences & Deliverability).
+- mb-bounce: hold. 7 day bounce 0.08 is over 0.02 (Sequences & Deliverability); daily cap figure is to-check (Sequences & Deliverability).
+- mb-young: hold. warmup is 3 days and the minimum is 14 (Sequences & Deliverability); daily cap figure is to-check (Sequences & Deliverability).
+- mb-hosted: hold. daily cap figure is to-check (Sequences & Deliverability).
 - Note: daily cap figure is to-check
 
 ## Quickstart check
@@ -85,6 +85,10 @@ Clash rejected: keyword already used by 11111111-1111-4111-8111-111111111111.
 | fit is unknown | 1 |
 | keyword already used by 11111111-1111-4111-8111-111111111111 | 1 |
 | mb-bounce: 7 day bounce 0.08 is over 0.02 | 1 |
+| mb-bounce: daily cap figure is to-check | 1 |
+| mb-hosted: daily cap figure is to-check | 1 |
+| mb-steady: daily cap figure is to-check | 1 |
+| mb-young: daily cap figure is to-check | 1 |
 | mb-young: warmup is 3 days and the minimum is 14 | 1 |
 | missing email | 1 |
 | name match without one exact email | 1 |

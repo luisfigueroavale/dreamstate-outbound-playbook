@@ -2,7 +2,7 @@
 
 ## Inputs
 
-artifact_id resolved at run time. platform linkedin. limit defaults to 50.
+artifact_id resolved at run time. platform linkedin. Do not pass a page size. Read every rule the call returns before you merge, because a partial set deletes the rules you leave out.
 
 ## Call
 

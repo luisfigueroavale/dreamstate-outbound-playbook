@@ -6,8 +6,8 @@ text{font-family:var(--font-sans)}
 </style>
 <rect width="1080" height="1350" fill="var(--color-bg)"/>
 <text x="72" y="84" fill="var(--color-fg)" font-size="36">Change one thing, then read it back</text>
-<text x="72" y="128" fill="var(--color-muted)" font-size="22">A stable split. Delivered messages only. A floor before a</text>
-<text x="72" y="156" fill="var(--color-muted)" font-size="22">winner.</text>
+<text x="72" y="128" fill="var(--color-muted)" font-size="22">A stable split. People messaged, not a delivered count. A</text>
+<text x="72" y="156" fill="var(--color-muted)" font-size="22">floor before a winner.</text>
 <rect x="72" y="196" width="936" height="196" fill="var(--color-bg)" stroke="var(--color-fg)" stroke-width="2"/>
 <text x="96" y="238" fill="var(--color-accent)" font-size="28">1. One change</text>
 <text x="96" y="274" fill="var(--color-muted)" font-size="20">One variable in the note</text>
@@ -19,10 +19,10 @@ text{font-family:var(--font-sans)}
 <text x="96" y="512" fill="var(--color-muted)" font-size="20">Same person, same variant</text>
 <text x="96" y="538" fill="var(--color-muted)" font-size="20">The engine assigns it</text>
 <rect x="72" y="620" width="936" height="196" fill="var(--color-bg)" stroke="var(--color-fg)" stroke-width="2"/>
-<text x="96" y="662" fill="var(--color-accent)" font-size="28">3. Send</text>
-<text x="96" y="698" fill="var(--color-muted)" font-size="20">Only after a yes on the draft</text>
-<text x="96" y="724" fill="var(--color-muted)" font-size="20">sequence stays a draft here</text>
-<text x="96" y="750" fill="var(--color-muted)" font-size="20">This card does not enroll</text>
+<text x="96" y="662" fill="var(--color-accent)" font-size="28">3. Launch</text>
+<text x="96" y="698" fill="var(--color-muted)" font-size="20">A draft yes is not a send</text>
+<text x="96" y="724" fill="var(--color-muted)" font-size="20">Enrollment is its own yes</text>
+<text x="96" y="750" fill="var(--color-muted)" font-size="20">Activation is its own yes</text>
 <rect x="72" y="832" width="936" height="196" fill="var(--color-bg)" stroke="var(--color-fg)" stroke-width="2"/>
 <text x="96" y="874" fill="var(--color-accent)" font-size="28">4. Read</text>
 <text x="96" y="910" fill="var(--color-muted)" font-size="20">People who replied over people messaged</text>
