@@ -102,7 +102,7 @@ export function buildCallPlans() {
           capability_id: "social.content.artifact_list",
           effect: "read",
           params: { status: "published", provider: "linkedin", limit: 25, include_deliveries: true },
-          show: "Free read. The list has no account filter. Keep an artifact only when a delivery belongs to the selected sender. If none does, stop.",
+          show: "Free read. No account filter. Keep an artifact only when the selected sender has a delivery with status published and a provider_post_id. The post id comes from that delivery. An archived delivery on the same account, with no post id, does not count.",
         }),
         step({
           id: "harvest",

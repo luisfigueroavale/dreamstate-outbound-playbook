@@ -27,7 +27,15 @@ function stopped(reason, rules, revision) {
     reason,
     expected_revision: shown,
     rules,
-    diff: { added: [], changed: [], kept: rules.map((rule) => rule.id).filter(Boolean).sort(byCodePoint) },
+    diff: {
+      added: [],
+      changed: [],
+      kept: rules
+        .filter((rule) => rule && typeof rule === "object" && !Array.isArray(rule))
+        .map((rule) => rule.id)
+        .filter(Boolean)
+        .sort(byCodePoint),
+    },
   };
 }
 
@@ -43,6 +51,9 @@ export function mergeKeywordRule(input = {}) {
   if (current.length > MAX_RULES) return stopped("at most 20 rules", current, revision);
   const seenIds = new Set();
   for (const rule of current) {
+    if (!rule || typeof rule !== "object" || Array.isArray(rule)) {
+      return stopped("a rule entry is not an object", current, revision);
+    }
     if (!rule.id) return stopped("an existing rule is missing its id", current, revision);
     const id = String(rule.id);
     if (seenIds.has(id)) return stopped("a rule id is repeated", current, revision);

@@ -51,7 +51,7 @@ Definition ids (source, provider, column) are not pasted as vendor names. Resolv
 | `visibility.linkedin.engagement_harvest` | 0 credits | confirmed | yes, it writes | worksheet_id, linkedin_account_id, post_id | dreamstate tools run visibility.linkedin.engagement_harvest |
 | `visibility.linkedin.engagement_status` | 0 credits | confirmed | free read | harvest_id | dreamstate tools run visibility.linkedin.engagement_status |
 | `visibility.linkedin.engagement_engagers` | 0 credits | confirmed | free read | harvest_id, optional max_pages | dreamstate tools run visibility.linkedin.engagement_engagers |
-| `social.content.artifact_list` | 0 credits | confirmed | free read | optional status, provider, limit up to 500, cursor | dreamstate tools run social.content.artifact_list |
+| `social.content.artifact_list` | 0 credits | confirmed | free read | optional status, provider, include_deliveries, limit up to 500, cursor | dreamstate tools run social.content.artifact_list |
 | `social.outreach.keyword_dm_rules.list` | 0 credits | confirmed | free read | artifact_id, optional platform | dreamstate tools run social.outreach.keyword_dm_rules.list |
 | `social.outreach.keyword_dm_rules.replace` | 0 credits, destructive | confirmed | yes | artifact_id, platform, expected_revision, rules | dreamstate tools run social.outreach.keyword_dm_rules.replace |
 | `social.comments.reply` | 0 credits | confirmed | yes, it writes a preview | comment_id, account_id, optional text | dreamstate tools run social.comments.reply |

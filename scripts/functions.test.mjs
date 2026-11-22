@@ -26,6 +26,8 @@ test("normalise rejects missing and malformed, marks personal, and keys the emai
   assert.equal(normaliseInbound({ email: "  ", form_id: FORM_ID }).reason, "missing email");
   assert.equal(normaliseInbound({ email: "not-an-email", form_id: FORM_ID }).reason, "malformed email");
   assert.equal(normaliseInbound({ email: "ada@acme.12", form_id: FORM_ID }).reason, "malformed email");
+  assert.equal(normaliseInbound({ email: "ada@1.2.3.4", form_id: FORM_ID }).reason, "malformed email");
+  assert.equal(normaliseInbound({ email: "ada@brand.xn--p1ai", form_id: FORM_ID }).ok, true);
   const personal = normaliseInbound({ email: "Dana@gmail.com", form_id: FORM_ID });
   assert.equal(personal.mailbox_class, "personal");
   assert.equal(personal.email, "dana@gmail.com");
@@ -122,6 +124,9 @@ test("keyword merge keeps other rules and rejects a clash", () => {
   assert.equal(mergeKeywordRule({ expected_revision: 2, rules: null, rule: { keywords: ["books"] } }).ok, false);
   const repeated = { id: "11111111-1111-4111-8111-111111111111", keywords: ["close"], dm_message: "kept" };
   assert.equal(mergeKeywordRule({ expected_revision: 2, rules: [repeated, { ...repeated }], rule: { keywords: ["books"] } }).ok, false);
+  const blankEntry = mergeKeywordRule({ expected_revision: 2, rules: [null], rule: { keywords: ["books"] } });
+  assert.equal(blankEntry.ok, false);
+  assert.match(blankEntry.reason, /not an object/);
 });
 
 test("reply pick is stable and an empty list stops", () => {
