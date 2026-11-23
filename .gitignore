@@ -1,0 +1,12 @@
+node_modules/
+brand.local/
+audience.local/
+settings.local/
+.banned-terms.local
+data/
+output/
+work/
+.env*
+*.key
+*credentials*.json
+.DS_Store

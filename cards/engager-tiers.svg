@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1350" viewBox="0 0 1080 1350" role="img">
+<title>People who show up more than once</title>
+<style>
+:root{--color-bg:#f4f7f4;--color-fg:#14241c;--color-accent:#0e6b52;--color-muted:#5c6b64;--font-sans:"Avenir Next", "Segoe UI", sans-serif}
+text{font-family:var(--font-sans)}
+</style>
+<rect width="1080" height="1350" fill="var(--color-bg)"/>
+<text x="72" y="84" fill="var(--color-fg)" font-size="36">People who show up more than once</text>
+<text x="72" y="128" fill="var(--color-muted)" font-size="22">Fit plus repeat engagement. Unknown fit is held.</text>
+<rect x="72" y="196" width="936" height="160" fill="var(--color-bg)" stroke="var(--color-fg)" stroke-width="2"/>
+<text x="96" y="238" fill="var(--color-accent)" font-size="28">1. Collect</text>
+<text x="96" y="274" fill="var(--color-muted)" font-size="20">Your own posts, 0 credits</text>
+<text x="96" y="300" fill="var(--color-muted)" font-size="20">visibility.linkedin.engagement_harvest</text>
+<text x="96" y="326" fill="var(--color-muted)" font-size="20">Harvest is a write. Yes first.</text>
+<rect x="72" y="372" width="936" height="160" fill="var(--color-bg)" stroke="var(--color-fg)" stroke-width="2"/>
+<text x="96" y="414" fill="var(--color-accent)" font-size="28">2. Roll up</text>
+<text x="96" y="450" fill="var(--color-muted)" font-size="20">One touch per person, post, kind</text>
+<text x="96" y="476" fill="var(--color-muted)" font-size="20">Team ids are left out</text>
+<text x="96" y="502" fill="var(--color-muted)" font-size="20">A comment beats a reaction</text>
+<rect x="72" y="548" width="936" height="160" fill="var(--color-bg)" stroke="var(--color-fg)" stroke-width="2"/>
+<text x="96" y="590" fill="var(--color-accent)" font-size="28">3. Score</text>
+<text x="96" y="626" fill="var(--color-muted)" font-size="20">column.ai_fit_score</text>
+<text x="96" y="652" fill="var(--color-muted)" font-size="20">0.04 a row</text>
+<text x="96" y="678" fill="var(--color-muted)" font-size="20">Quote one row, then a ceiling</text>
+<rect x="72" y="724" width="936" height="160" fill="var(--color-bg)" stroke="var(--color-fg)" stroke-width="2"/>
+<text x="96" y="766" fill="var(--color-accent)" font-size="28">4. Tier 1</text>
+<text x="96" y="802" fill="var(--color-muted)" font-size="20">Fit at 75 plus a comment or repeat</text>
+<text x="96" y="828" fill="var(--color-muted)" font-size="20">Your own note</text>
+<text x="96" y="854" fill="var(--color-muted)" font-size="20">Cap 10 a week</text>
+<rect x="72" y="900" width="936" height="160" fill="var(--color-bg)" stroke="var(--color-fg)" stroke-width="2"/>
+<text x="96" y="942" fill="var(--color-accent)" font-size="28">5. Tier 2</text>
+<text x="96" y="978" fill="var(--color-muted)" font-size="20">Fit at 55</text>
+<text x="96" y="1004" fill="var(--color-muted)" font-size="20">A draft LinkedIn sequence</text>
+<text x="96" y="1030" fill="var(--color-muted)" font-size="20">Draft and enrollment each need a yes</text>
+<rect x="72" y="1076" width="936" height="160" fill="var(--color-bg)" stroke="var(--color-fg)" stroke-width="2"/>
+<text x="96" y="1118" fill="var(--color-accent)" font-size="28">6. Hold</text>
+<text x="96" y="1154" fill="var(--color-muted)" font-size="20">Unknown fit stays held</text>
+<text x="96" y="1180" fill="var(--color-muted)" font-size="20">Stale touches drop a tier</text>
+<text x="96" y="1206" fill="var(--color-muted)" font-size="20">Do not invent a score</text>
+<text x="72" y="1302" fill="var(--color-fg)" font-size="20">Run it with roll-up-post-engagers, then tier-warm-people.</text>
+</svg>

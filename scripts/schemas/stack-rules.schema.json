@@ -1,0 +1,15 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["status", "spf_observed", "dkim_observed", "dmarc_observed", "bounce_7d_max", "warmup_min_days", "daily_cap_max", "citations"],
+  "properties": {
+    "status": { "type": "string" },
+    "spf_observed": { "type": "boolean" },
+    "dkim_observed": { "type": "boolean" },
+    "dmarc_observed": { "type": "boolean" },
+    "bounce_7d_max": { "type": "number" },
+    "warmup_min_days": { "type": "number" },
+    "daily_cap_max": { "type": "null" },
+    "citations": { "type": "object" }
+  }
+}

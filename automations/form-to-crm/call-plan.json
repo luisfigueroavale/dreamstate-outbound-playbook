@@ -1,0 +1,126 @@
+{
+  "name": "form-to-crm",
+  "status": "disabled",
+  "steps": [
+    {
+      "mode": "dry_run",
+      "needs_yes": true,
+      "credit_ceiling": 0,
+      "params": {
+        "table_id": "RESOLVE_AT_RUN_TIME",
+        "source_column_id": null,
+        "binding_spec": {
+          "definition_id": "source.webhook_source",
+          "input_bindings": {
+            "require_secret": {
+              "kind": "literal",
+              "value": true
+            },
+            "upsert_field": {
+              "kind": "literal",
+              "value": "email"
+            }
+          }
+        }
+      },
+      "id": "attach-webhook",
+      "capability_id": "tables.table_sources.attach",
+      "effect": "write",
+      "show": "require_secret is true. upsert_field is email. The worksheet id is resolved at run time."
+    },
+    {
+      "mode": "live",
+      "needs_yes": false,
+      "credit_ceiling": 0,
+      "params": {},
+      "id": "normalise",
+      "local_function": "normalise-inbound",
+      "effect": "local",
+      "show": "Hold a missing or malformed email."
+    },
+    {
+      "mode": "live",
+      "needs_yes": false,
+      "credit_ceiling": 0,
+      "params": {
+        "q": "NORMALISED_EMAIL"
+      },
+      "id": "search-crm",
+      "capability_id": "crm.records.search",
+      "effect": "read",
+      "show": "Pass the normalised email. An error is class failed."
+    },
+    {
+      "mode": "live",
+      "needs_yes": false,
+      "credit_ceiling": 0,
+      "params": {},
+      "id": "classify",
+      "local_function": "classify-crm-match",
+      "effect": "local",
+      "show": "Runs here, not in the graph. The graph has no CRM search results. A new row returns next assert_record. A sync waits until there is a record id."
+    },
+    {
+      "mode": "live",
+      "needs_yes": false,
+      "credit_ceiling": 0,
+      "params": {},
+      "id": "list-objects",
+      "capability_id": "crm.record_objects.list",
+      "effect": "read",
+      "show": "Free read. Copy object_key from this list. Do not paste a type name into the plan."
+    },
+    {
+      "mode": "dry_run",
+      "needs_yes": true,
+      "credit_ceiling": 0,
+      "params": {
+        "object_key": "RESOLVE_AT_RUN_TIME",
+        "identity": {
+          "kind": "email",
+          "value": "NORMALISED_EMAIL"
+        },
+        "values": {}
+      },
+      "id": "assert-record",
+      "capability_id": "crm.records.assert",
+      "effect": "write",
+      "show": "Only when next is assert_record. Pass the returned record id to the sync. Skip this step when the class is existing and a record id is already in hand."
+    },
+    {
+      "mode": "live",
+      "needs_yes": false,
+      "credit_ceiling": 0,
+      "params": {},
+      "id": "read-provider",
+      "capability_id": "integrations.health_get",
+      "effect": "read",
+      "show": "Resolve the provider from this read. Do not paste a provider name into the plan."
+    },
+    {
+      "mode": "dry_run",
+      "needs_yes": true,
+      "credit_ceiling": 0,
+      "params": {
+        "record_id": "FROM_ASSERT_OR_MATCH",
+        "provider": "FROM_HEALTH"
+      },
+      "id": "sync-one",
+      "capability_id": "integrations.sync",
+      "effect": "send",
+      "show": "One record per yes, and only after a record id exists. Queued is not done."
+    },
+    {
+      "mode": "live",
+      "needs_yes": false,
+      "credit_ceiling": 0,
+      "params": {
+        "provider": "FROM_HEALTH"
+      },
+      "id": "read-health",
+      "capability_id": "integrations.health_get",
+      "effect": "read",
+      "show": "Read queue depth, failed, dead, and last success after the sync."
+    }
+  ]
+}

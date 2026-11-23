@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1350" viewBox="0 0 1080 1350" role="img">
+<title>What must be true before the first send</title>
+<style>
+:root{--color-bg:#f4f7f4;--color-fg:#14241c;--color-accent:#0e6b52;--color-muted:#5c6b64;--font-sans:"Avenir Next", "Segoe UI", sans-serif}
+text{font-family:var(--font-sans)}
+</style>
+<rect width="1080" height="1350" fill="var(--color-bg)"/>
+<text x="72" y="84" fill="var(--color-fg)" font-size="36">What must be true before the first send</text>
+<text x="72" y="128" fill="var(--color-muted)" font-size="22">Free reads. A hold names the reason and the seat.</text>
+<rect x="72" y="196" width="936" height="160" fill="var(--color-bg)" stroke="var(--color-fg)" stroke-width="2"/>
+<text x="96" y="238" fill="var(--color-accent)" font-size="28">1. Domains</text>
+<text x="96" y="274" fill="var(--color-muted)" font-size="20">List sending domains</text>
+<text x="96" y="300" fill="var(--color-muted)" font-size="20">senders.domains.sending.list</text>
+<text x="96" y="326" fill="var(--color-muted)" font-size="20">Free read</text>
+<rect x="72" y="372" width="936" height="160" fill="var(--color-bg)" stroke="var(--color-fg)" stroke-width="2"/>
+<text x="96" y="414" fill="var(--color-accent)" font-size="28">2. DNS</text>
+<text x="96" y="450" fill="var(--color-muted)" font-size="20">SPF, DKIM, and DMARC observed</text>
+<text x="96" y="476" fill="var(--color-muted)" font-size="20">senders.domains.health_list</text>
+<text x="96" y="502" fill="var(--color-muted)" font-size="20">Provider managed domains are skipped</text>
+<rect x="72" y="548" width="936" height="160" fill="var(--color-bg)" stroke="var(--color-fg)" stroke-width="2"/>
+<text x="96" y="590" fill="var(--color-accent)" font-size="28">3. Mailboxes</text>
+<text x="96" y="626" fill="var(--color-muted)" font-size="20">Connected mailboxes and caps</text>
+<text x="96" y="652" fill="var(--color-muted)" font-size="20">senders.mailboxes.list</text>
+<text x="96" y="678" fill="var(--color-muted)" font-size="20">Free read</text>
+<rect x="72" y="724" width="936" height="160" fill="var(--color-bg)" stroke="var(--color-fg)" stroke-width="2"/>
+<text x="96" y="766" fill="var(--color-accent)" font-size="28">4. Bounce</text>
+<text x="96" y="802" fill="var(--color-muted)" font-size="20">7 day bounce</text>
+<text x="96" y="828" fill="var(--color-muted)" font-size="20">senders.mailboxes.health_get</text>
+<text x="96" y="854" fill="var(--color-muted)" font-size="20">Unknown is not zero</text>
+<rect x="72" y="900" width="936" height="160" fill="var(--color-bg)" stroke="var(--color-fg)" stroke-width="2"/>
+<text x="96" y="942" fill="var(--color-accent)" font-size="28">5. Warmup</text>
+<text x="96" y="978" fill="var(--color-muted)" font-size="20">Age before a live sequence</text>
+<text x="96" y="1004" fill="var(--color-muted)" font-size="20">Warmup report, free</text>
+<text x="96" y="1030" fill="var(--color-muted)" font-size="20">Working default 14 days</text>
+<rect x="72" y="1076" width="936" height="160" fill="var(--color-bg)" stroke="var(--color-fg)" stroke-width="2"/>
+<text x="96" y="1118" fill="var(--color-accent)" font-size="28">6. Cap</text>
+<text x="96" y="1154" fill="var(--color-muted)" font-size="20">A daily cap on every mailbox</text>
+<text x="96" y="1180" fill="var(--color-muted)" font-size="20">Suppression is a separate yes</text>
+<text x="96" y="1206" fill="var(--color-muted)" font-size="20">Figure on the rules page is to-check</text>
+<text x="72" y="1302" fill="var(--color-fg)" font-size="20">Run it with check-email-stack. Nothing is changed.</text>
+</svg>

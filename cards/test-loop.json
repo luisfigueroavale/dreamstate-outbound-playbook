@@ -1,0 +1,13 @@
+{
+  "id": "test-loop",
+  "title": "Change one thing, then read it back",
+  "subtitle": "A stable split. People messaged, not a delivered count. A floor before a winner.",
+  "boxes": [
+    {"n": 1, "name": "One change", "lines": ["One variable in the note", "Leave the audience alone", "Write the hypothesis down"]},
+    {"n": 2, "name": "Split", "lines": ["A stable hash, not a coin toss", "Same person, same variant", "The engine assigns it"]},
+    {"n": 3, "name": "Launch", "lines": ["A draft yes is not a send", "Enrollment is its own yes", "Activation is its own yes"]},
+    {"n": 4, "name": "Read", "lines": ["People who replied over people messaged", "sequence.sequences.variants_get", "Small groups stay a hint"]},
+    {"n": 5, "name": "Floor", "lines": ["Do not call a winner early", "Compare with the variant read", "One log row per variant"]}
+  ],
+  "footer": "The math lives in the engine. This card only points."
+}

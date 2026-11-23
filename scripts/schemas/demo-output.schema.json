@@ -1,0 +1,24 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["fictional", "forms", "syncs_proposed", "touches", "people", "tiers", "replies_previewed", "holds_by_reason", "credits", "sent"],
+  "properties": {
+    "fictional": { "const": true },
+    "as_of": { "type": "string" },
+    "forms": { "type": "number" },
+    "syncs_proposed": { "type": "number" },
+    "touches": { "type": "number" },
+    "people": { "type": "number" },
+    "tiers": { "type": "object" },
+    "replies_previewed": { "type": "number" },
+    "holds_by_reason": { "type": "object" },
+    "credits": { "const": 0 },
+    "sent": { "const": 0 },
+    "form_routes": { "type": "array" },
+    "keyword_added": { "type": "boolean" },
+    "keyword_clash_rejected": { "type": "boolean" },
+    "replies": { "type": "array" },
+    "stack": { "type": "object" },
+    "quickstart": { "type": "object" }
+  }
+}

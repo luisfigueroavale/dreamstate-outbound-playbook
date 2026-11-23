@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1350" viewBox="0 0 1080 1350" role="img">
+<title>Change one thing, then read it back</title>
+<style>
+:root{--color-bg:#f4f7f4;--color-fg:#14241c;--color-accent:#0e6b52;--color-muted:#5c6b64;--font-sans:"Avenir Next", "Segoe UI", sans-serif}
+text{font-family:var(--font-sans)}
+</style>
+<rect width="1080" height="1350" fill="var(--color-bg)"/>
+<text x="72" y="84" fill="var(--color-fg)" font-size="36">Change one thing, then read it back</text>
+<text x="72" y="128" fill="var(--color-muted)" font-size="22">A stable split. People messaged, not a delivered count. A</text>
+<text x="72" y="156" fill="var(--color-muted)" font-size="22">floor before a winner.</text>
+<rect x="72" y="196" width="936" height="196" fill="var(--color-bg)" stroke="var(--color-fg)" stroke-width="2"/>
+<text x="96" y="238" fill="var(--color-accent)" font-size="28">1. One change</text>
+<text x="96" y="274" fill="var(--color-muted)" font-size="20">One variable in the note</text>
+<text x="96" y="300" fill="var(--color-muted)" font-size="20">Leave the audience alone</text>
+<text x="96" y="326" fill="var(--color-muted)" font-size="20">Write the hypothesis down</text>
+<rect x="72" y="408" width="936" height="196" fill="var(--color-bg)" stroke="var(--color-fg)" stroke-width="2"/>
+<text x="96" y="450" fill="var(--color-accent)" font-size="28">2. Split</text>
+<text x="96" y="486" fill="var(--color-muted)" font-size="20">A stable hash, not a coin toss</text>
+<text x="96" y="512" fill="var(--color-muted)" font-size="20">Same person, same variant</text>
+<text x="96" y="538" fill="var(--color-muted)" font-size="20">The engine assigns it</text>
+<rect x="72" y="620" width="936" height="196" fill="var(--color-bg)" stroke="var(--color-fg)" stroke-width="2"/>
+<text x="96" y="662" fill="var(--color-accent)" font-size="28">3. Launch</text>
+<text x="96" y="698" fill="var(--color-muted)" font-size="20">A draft yes is not a send</text>
+<text x="96" y="724" fill="var(--color-muted)" font-size="20">Enrollment is its own yes</text>
+<text x="96" y="750" fill="var(--color-muted)" font-size="20">Activation is its own yes</text>
+<rect x="72" y="832" width="936" height="196" fill="var(--color-bg)" stroke="var(--color-fg)" stroke-width="2"/>
+<text x="96" y="874" fill="var(--color-accent)" font-size="28">4. Read</text>
+<text x="96" y="910" fill="var(--color-muted)" font-size="20">People who replied over people messaged</text>
+<text x="96" y="936" fill="var(--color-muted)" font-size="20">sequence.sequences.variants_get</text>
+<text x="96" y="962" fill="var(--color-muted)" font-size="20">Small groups stay a hint</text>
+<rect x="72" y="1044" width="936" height="196" fill="var(--color-bg)" stroke="var(--color-fg)" stroke-width="2"/>
+<text x="96" y="1086" fill="var(--color-accent)" font-size="28">5. Floor</text>
+<text x="96" y="1122" fill="var(--color-muted)" font-size="20">Do not call a winner early</text>
+<text x="96" y="1148" fill="var(--color-muted)" font-size="20">Compare with the variant read</text>
+<text x="96" y="1174" fill="var(--color-muted)" font-size="20">One log row per variant</text>
+<text x="72" y="1302" fill="var(--color-fg)" font-size="20">The math lives in the engine. This card only points.</text>
+</svg>

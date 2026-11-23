@@ -1,0 +1,18 @@
+/*
+  Working defaults for the play cards.
+  brand.local/tokens.css replaces these when the owner fills it.
+  The shared template names are unchanged.
+*/
+
+:root {
+  --color-bg: #f4f7f4;
+  --color-fg: #14241c;
+  --color-accent: #0e6b52;
+  --color-muted: #5c6b64;
+  --font-sans: "Avenir Next", "Segoe UI", sans-serif;
+  --size-title: 36px;
+  --size-body: 20px;
+  --size-kicker: 22px;
+  --space-safe: 72px;
+  --space-block: 16px;
+}

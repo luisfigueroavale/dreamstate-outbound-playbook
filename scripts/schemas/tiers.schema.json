@@ -1,0 +1,14 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["status", "top_fit", "middle_fit", "recency_days", "tier_1_cap_per_week"],
+  "properties": {
+    "status": { "type": "string" },
+    "top_fit": { "type": "number" },
+    "middle_fit": { "type": "number" },
+    "recency_days": { "type": "number" },
+    "tier_1_cap_per_week": { "type": "number" },
+    "scale": { "type": "string" },
+    "note": { "type": "string" }
+  }
+}

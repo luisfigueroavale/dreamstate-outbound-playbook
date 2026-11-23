@@ -1,0 +1,21 @@
+{
+  "name": "dreamstate-outbound-playbook",
+  "private": true,
+  "type": "module",
+  "description": "The outbound plays we run on Dreamstate, each one readable in a minute and installable one at a time.",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "check": "node scripts/check.mjs",
+    "test": "node --test",
+    "demo": "node scripts/demo.mjs",
+    "quickstart": "node scripts/quickstart.mjs",
+    "cards": "node scripts/cards.mjs",
+    "plan-install": "node scripts/plan-install.mjs",
+    "grade-stack": "node scripts/grade-stack.mjs",
+    "skills": "node scripts/skills.mjs",
+    "skills:link": "node scripts/skills-link.mjs"
+  }
+}
